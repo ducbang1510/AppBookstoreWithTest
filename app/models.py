@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 from datetime import datetime
 from enum import Enum as UserEnum
-import hashlib
 
 
 class UserRole(UserEnum):
@@ -22,21 +21,22 @@ class User(db.Model, UserMixin):
     email = Column(String(50), nullable=True)
     username = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
-    avatar = Column(String(100))
+    avatar = Column(String(100), nullable=True)
     active = Column(Boolean, default=True)
     joined_date = Column(Date, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
 
-    def __init__(self, name, email, username, plaintext_password, avatar=None, active='True', user_role=UserRole.USER):
+    def __init__(self, name, email, username, password, avatar=None, active=True, user_role=UserRole.USER):
         self.name = name
         self.email = email
         self.username = username
-        self.password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.avatar = avatar
         self.active = active
         self.user_role = user_role
 
     def is_correct_password(self, plaintext_password: str):
-        return bcrypt.check_password_hash(self.hashed_password, plaintext_password)
+        return bcrypt.check_password_hash(self.password, plaintext_password)
 
     def set_password(self, plaintext_password):
         self.password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')

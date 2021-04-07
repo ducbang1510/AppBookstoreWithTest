@@ -1,11 +1,11 @@
 from flask import Flask, render_template
-from flask_admin import Admin
+from flask_admin import Admin, BaseView
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
-admin = Admin(name="Quản lý nhà sách", template_mode="bootstrap4")  # base_template="layout.html"
+admin = Admin(name="Quản lý nhà sách", base_template="layout.html", template_mode="bootstrap3")  # base_template="layout.html"
 login_manager = LoginManager()
 bcrypt = Bcrypt()
 

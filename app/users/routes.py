@@ -19,8 +19,6 @@ def login():
         if form.validate_on_submit():
             user = User.query.filter_by(username=form.username.data).first()
             if user and user.is_correct_password(form.password.data):
-                db.session.add(user)
-                db.session.commit()
                 login_user(user, remember=form.remember_me.data)
                 flash('Thanks for logging in, {}!'.format(current_user.username))
                 return redirect(url_for('index'))
