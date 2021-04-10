@@ -5,8 +5,9 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
-admin = Admin(name="Quản lý nhà sách", base_template="layout.html", template_mode="bootstrap3")  # base_template="layout.html"
+admin = Admin(name="Quản lý nhà sách", base_template="layout.html", template_mode="bootstrap3")
 login_manager = LoginManager()
+login_manager.login_view = "users.login"
 bcrypt = Bcrypt()
 
 
@@ -18,7 +19,7 @@ def create_app(config=None):
 
     @app.route("/")
     def index():
-        return render_template('index.html')
+        return render_template('base_users.html')
 
     return app
 

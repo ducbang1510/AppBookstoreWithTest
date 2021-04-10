@@ -61,15 +61,16 @@
         <div class="alert alert-info alert-dismissible">{{ info_message }}</div>
     {% endfor %}
 
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
 
-    <div class="container-scroller">
-        {% block page_body %}
-        {% endblock %}
-    </div>
-
+    {% block content %}
+        <div class="container text-muted">
+            <br>
+            <h1>Welcome to the Flask User Management Example!</h1>
+            <br>
+            <p><em>Need an account? </em><a href="{{ url_for('users.register') }}">Register!</a></p>
+            <p><em>Existing user? </em><a href="{{ url_for('users.login') }}">Login!</a></p>
+        </div>
+    {% endblock %}
 
     <!-- container-scroller -->
     <!-- plugins:js -->

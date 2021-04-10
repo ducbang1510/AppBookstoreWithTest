@@ -1,6 +1,6 @@
 import pytest
 from app import create_app, db
-from app.models import User
+from app.models import *
 
 
 @pytest.fixture(scope='module')
@@ -26,8 +26,8 @@ def init_database(test_client):
     db.create_all()
 
     # Insert user data
-    user1 = User(username='admin123', password='123456')
-    user2 = User(username='bang123', password='654321')
+    user1 = User(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456')
+    user2 = User(name='Tran Bang', email='abdc@gmail.com', username='admin456', password='654321')
     db.session.add(user1)
     db.session.add(user2)
 
@@ -36,6 +36,7 @@ def init_database(test_client):
 
     yield  # this is where the testing happens!
 
+    db.session.remove()
     db.drop_all()
 
 

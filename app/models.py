@@ -1,5 +1,5 @@
 from app import db, create_app, bcrypt
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, Boolean, Date, Enum, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Enum
 from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 from datetime import datetime
@@ -18,20 +18,18 @@ class User(db.Model, UserMixin):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
-    email = Column(String(50), nullable=True)
+    email = Column(String(50), nullable=False)
     username = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
-    avatar = Column(String(100), nullable=True)
     active = Column(Boolean, default=True)
     joined_date = Column(Date, default=datetime.now())
     user_role = Column(Enum(UserRole), default=UserRole.USER)
 
-    def __init__(self, name, email, username, password, avatar=None, active=True, user_role=UserRole.USER):
+    def __init__(self, name, email, username, password, active=True, user_role=UserRole.USER):
         self.name = name
         self.email = email
         self.username = username
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-        self.avatar = avatar
         self.active = active
         self.user_role = user_role
 
