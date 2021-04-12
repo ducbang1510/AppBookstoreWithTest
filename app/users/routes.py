@@ -11,7 +11,7 @@ def register():
     # If the User is already logged in, don't allow them to try to register
     if current_user.is_authenticated:
         flash('Already registered!  Redirecting to your User Profile page...')
-        return redirect(url_for('index'))
+        return redirect(url_for('store_pages.index'))
 
     form = RegisterForm()
 
@@ -28,7 +28,7 @@ def register():
             db.session.commit()
             login_user(new_user)
             flash('Thanks for registering, {}!'.format(new_user.username))
-            return redirect(url_for('index'))
+            return redirect(url_for('store_pages.index'))
     return render_template('users/register.html', form=form)
 
 
@@ -37,7 +37,7 @@ def login():
     # If the User is already logged in, don't allow them to try to log in again
     if current_user.is_authenticated:
         flash('Already logged in!  Redirecting to your User Profile page...')
-        return redirect(url_for('index'))
+        return redirect(url_for('store_pages.index'))
 
     form = LoginForm()
 
@@ -49,7 +49,7 @@ def login():
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
                 flash('Thanks for logging in, {}!'.format(current_user.username))
-                return redirect(url_for('index'))
+                return redirect(url_for('store_pages.index'))
 
         flash('ERROR! Incorrect login credentials.')
     return render_template('users/login.html', form=form)
@@ -63,4 +63,4 @@ def logout():
     db.session.commit()
     logout_user()
     flash('Goodbye!')
-    return redirect(url_for('index'))
+    return redirect(url_for('store_pages.index'))

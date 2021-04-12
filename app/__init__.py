@@ -16,11 +16,6 @@ def create_app(config=None):
     app.config.from_pyfile(config)
     initialize_extensions(app)
     register_blueprints(app)
-
-    @app.route("/")
-    def index():
-        return render_template('base_users.html')
-
     return app
 
 
@@ -39,5 +34,7 @@ def initialize_extensions(app):
 
 def register_blueprints(app):
     from app.users import users_blueprint
+    from app.store_pages import store_pages_blueprint
 
     app.register_blueprint(users_blueprint)
+    app.register_blueprint(store_pages_blueprint)

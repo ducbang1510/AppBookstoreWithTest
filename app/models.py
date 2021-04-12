@@ -1,4 +1,5 @@
 from app import db, create_app, bcrypt
+from app.mixins import CRUDMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Enum
 from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
@@ -12,7 +13,7 @@ class UserRole(UserEnum):
 
 
 #User_DataTable
-class User(db.Model, UserMixin):
+class User(db.Model, CRUDMixin, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
