@@ -4,8 +4,6 @@ from flask_login import current_user
 from tests.base_test import BaseTestCase
 from app.models import *
 
-import unittest
-
 
 class UserViewsTests(BaseTestCase):
     def test_login_page(self):
@@ -123,6 +121,3 @@ class UserViewsTests(BaseTestCase):
 # Run unittest
 # python -m unittest -v to run all tests
 # python -m unittest filepath to run file test
-
-if __name__ == '__main__':
-    unittest.main()
