@@ -139,19 +139,27 @@
                             <ul id="shopDropdownMenu"
                                 class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900"
                                 aria-labelledby="shopDropdownInvoker">
-                                <li><a href="#" class="dropdown-item link-black-100">Danh sách
-                                    sản phẩm</a></li> {# {{ url_for('shop_list', page_num=1) }} #}
-                                <li><a href="#" class="dropdown-item link-black-100">Giỏ hàng</a></li> {# {{ url_for('shop_cart') }} #}
-                                <li><a href="#" class="dropdown-item link-black-100">Thanh toán</a>
+                                <li>
+                                    <a href="{{ url_for('store_pages.shop_list', page_num=1) }}"
+                                       class="dropdown-item link-black-100">
+                                    Danh sách sản phẩm
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item link-black-100">
+                                        Giỏ hàng
+                                    </a>
+                                </li> {# {{ url_for('shop_cart') }} #}
+                                <li>
+                                    <a href="#" class="dropdown-item link-black-100">
+                                        Thanh toán
+                                    </a>
                                 </li> {# {{ url_for('checkout') }} #}
-                                <li><a href="#" class="dropdown-item link-black-100">Tài khoản của
-                                    tôi</a></li> {# {{ url_for('my_account') }} #}
-{#                                <li><a href="../shop/order-received.html" class="dropdown-item link-black-100">Đơn hàng#}
-{#                                    đã nhận</a></li>#}
-{#                                <li><a href="../shop/order-tracking.html" class="dropdown-item link-black-100">Theo dõi#}
-{#                                    đơn hàng</a></li>#}
-{#                                <li><a href="../shop/store-location.html" class="dropdown-item link-black-100">Địa#}
-{#                                    chỉ</a></li>#}
+                                <li>
+                                    <a href="#" class="dropdown-item link-black-100">
+                                        Tài khoản của tôi
+                                    </a>
+                                </li> {# {{ url_for('my_account') }} #}
                             </ul>
                         </li>
 {#                        <li class="nav-item dropdown">#}

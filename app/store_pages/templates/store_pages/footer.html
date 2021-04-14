@@ -150,7 +150,7 @@
                             {% for cat in categories %}
                                 <li class="pb-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100"
-                                       href="{{ url_for('shop_filter', category_id = cat.id) }}">
+                                       href="{{ url_for('store_pages.shop_filter', category_id = cat.id) }}">
                                         {{ cat.name }}
                                     </a>
                                 </li>

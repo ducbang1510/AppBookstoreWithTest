@@ -1,6 +1,7 @@
 from app import db, create_app, bcrypt
 from app.mixins import CRUDMixin
 from sqlalchemy import Column, Integer, Float, String, ForeignKey, Boolean, Date, Enum
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import relationship, backref
 from flask_login import UserMixin
 from datetime import datetime
@@ -103,11 +104,12 @@ class Book(db.Model, CRUDMixin):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
+    content = Column(LONGTEXT, nullable=True)
     description = Column(String(255))
     image = Column(String(255))
     price = Column(Float, default=0)
-    # categories = relationship('Category', secondary='book_cate', lazy='subquery', backref=backref('books', lazy=True))
-    # authors = relationship('Author', secondary='book_author', lazy='subquery', backref=backref('books', lazy=True))
+    categories = relationship('Category', secondary='book_cate', lazy='subquery', backref=backref('books', lazy=True))
+    authors = relationship('Author', secondary='book_author', lazy='subquery', backref=backref('books', lazy=True))
     # images = relationship('Bookimage', backref=backref('books', lazy=True))
     # invoices = relationship('Invoice', secondary='detail_invoice', lazy='subquery', backref=backref('books', lazy=True))
     # inventory_reports = relationship('InventoryReport', secondary='detail_inventory_report', lazy='subquery',
@@ -152,6 +154,9 @@ class Author(db.Model, CRUDMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     image = Column(String(255))
+
+    def __str__(self):
+        return self.name
 
 
 # Bảng sách-tác giả
