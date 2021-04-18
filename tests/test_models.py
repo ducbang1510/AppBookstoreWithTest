@@ -1,14 +1,17 @@
 from app.models import *
 from tests.base_test import BaseTestCase
-import unittest
 
 
 def new_user(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456'):
     return User.create(name=name, email=email, username=username, password=password)
 
 
-class ModelTests(BaseTestCase):
+def new_book(name="Sự Im Lặng Của Bầy Cừu", content=None, description="Bìa mềm", image="assets/img/book_img/img6.jpg",
+             price=115000, quantity=50):
+    return Book.create(name=name, quantity=quantity, description=description, image=image, price=price)
 
+
+class ModelTests(BaseTestCase):
     def test_new_user(self):
         """
         GIVEN a User model
@@ -51,6 +54,22 @@ class ModelTests(BaseTestCase):
         assert not isinstance(user.get_id(), int)
         assert user.get_id() == '10'
 
+    def test_add_book(self):
+        book = new_book()
+        self.assertTrue(isinstance(book, Book))
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    def test_add_book_invalid(self):
+        new_book()
+        book = new_book(quantity=45)
+
+        self.assertTrue(book.quantity == 95)
+
+    def test_new_category(self):
+        category = Category.create(name="Tiểu thuyết")
+
+        self.assertTrue(isinstance(category, Category))
+
+    def test_new_author(self):
+        author = Author.create(name="Tiểu thuyết")
+
+        self.assertTrue(isinstance(author, Author))

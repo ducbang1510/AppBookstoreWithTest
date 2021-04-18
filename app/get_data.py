@@ -13,13 +13,6 @@ def get_authors(lm=None):
     return authors.all()
 
 
-def get_books(lm=None):
-    books = Book.query
-    if lm:
-        books = books.limit(lm)
-    return books.all()
-
-
 def get_author_of_book(book_id):
     authors = Author.query.join(BookAuthor, Author.id == BookAuthor.author_id) \
         .filter(BookAuthor.book_id == book_id)
@@ -49,7 +42,7 @@ def get_book_with_details():
     return books.all()
 
 
-def filter_book(cate_id=None, author_id=None, min_price=None, max_price=None, kw=None):
+def filter_book(cate_id=None, author_id=None, min_price=None, max_price=None, kw=None, lm=None):
     books = Book.query
 
     if kw:
@@ -65,6 +58,9 @@ def filter_book(cate_id=None, author_id=None, min_price=None, max_price=None, kw
 
     if min_price and max_price:
         books = books.filter(Book.price.__gt__(min_price), Book.price.__lt__(max_price))
+
+    if lm:
+        books = books.limit(lm)
 
     return books.all()
 

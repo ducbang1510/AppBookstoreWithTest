@@ -8,8 +8,8 @@ from . import store_pages_blueprint
 @store_pages_blueprint.route('/')
 def index():
     categories = get_data.get_category()
-    books = get_data.get_books()
-    booklm = get_data.get_books(10)
+    books = get_data.filter_book()
+    booklm = get_data.filter_book(10)
     book_list = get_data.get_book_with_details()
     authors = get_data.get_authors(8)
 
@@ -32,7 +32,7 @@ def index():
 def book_detail(book_id):
     categories = get_data.get_category()
     book = get_data.get_book_by_id(book_id)
-    books = get_data.get_books()
+    books = get_data.filter_book()
     book_list = get_data.get_book_with_details()
     authors = get_data.get_author_of_book(book_id)
     images = get_data.get_image('300x452', book_id=book_id)
@@ -55,7 +55,7 @@ def book_detail(book_id):
 def shop_list(page_num):
     categories = get_data.get_category()
     author_list = get_data.get_authors()
-    books = get_data.get_books()
+    books = get_data.filter_book()
     book_list = get_data.get_book_with_details()
     book_pagi = Book.query.paginate(per_page=12, page=page_num, error_out=True)
     all_pages = book_pagi.iter_pages()
@@ -86,6 +86,9 @@ def shop_filter():
     cate_id = request.args.get("category_id")
     author_id = request.args.get("author_id")
     books = get_data.filter_book(cate_id=cate_id, author_id=author_id, min_price=min_price, max_price=max_price, kw=kw)
+
+    if len(books) == 0:
+        flash('Không có kết quả nào về {}'.format(kw))
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {

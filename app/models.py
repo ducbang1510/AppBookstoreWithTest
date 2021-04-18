@@ -103,17 +103,30 @@ class Book(db.Model, CRUDMixin):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), nullable=False)
+    name = Column(String(50), nullable=False, unique=True)
     content = Column(LONGTEXT, nullable=True)
     description = Column(String(255))
     image = Column(String(255))
     price = Column(Float, default=0)
+    quantity = Column(Integer, nullable=False, default=50)
     categories = relationship('Category', secondary='book_cate', lazy='subquery', backref=backref('books', lazy=True))
     authors = relationship('Author', secondary='book_author', lazy='subquery', backref=backref('books', lazy=True))
+
     # images = relationship('Bookimage', backref=backref('books', lazy=True))
     # invoices = relationship('Invoice', secondary='detail_invoice', lazy='subquery', backref=backref('books', lazy=True))
     # inventory_reports = relationship('InventoryReport', secondary='detail_inventory_report', lazy='subquery',
     #                                  backref=backref('books', lazy=True))
+
+    def __init__(self, name, quantity, content=None, description=None, image=None, price=None):
+        self.name = name
+        self.content = content
+        self.description = description
+        self.image = image
+        self.price = price
+        self.quantity = quantity
+
+    def __str__(self):
+        return self.name
 
 
 class Bookimage(db.Model):
@@ -133,17 +146,24 @@ class Category(db.Model, CRUDMixin):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
 
+    def __init__(self, name):
+        self.name = name
+
     def __str__(self):
         return self.name
 
 
 # Bảng sách-thể loại
-class BookCate(db.Model):
+class BookCate(db.Model, CRUDMixin):
     __tablename__ = 'book_cate'
     __table_args__ = {'extend_existing': True}
 
     book_id = Column(Integer, ForeignKey('book.id'), primary_key=True)
     category_id = Column(Integer, ForeignKey('category.id'), primary_key=True)
+
+    def __init__(self, book_id, category_id):
+        self.book_id = book_id
+        self.category_id = category_id
 
 
 # Bảng tác giả
@@ -155,12 +175,15 @@ class Author(db.Model, CRUDMixin):
     name = Column(String(50), nullable=False)
     image = Column(String(255))
 
+    def __init__(self, name):
+        self.name = name
+
     def __str__(self):
         return self.name
 
 
 # Bảng sách-tác giả
-class BookAuthor(db.Model):
+class BookAuthor(db.Model, CRUDMixin):
     __tablename__ = 'book_author'
     __table_args__ = {'extend_existing': True}
 
@@ -220,9 +243,7 @@ class DetailInventoryReport(db.Model):
 
     report_id = Column(Integer, ForeignKey('inventory_report.id'), primary_key=True)
     book_id = Column(Integer, ForeignKey('book.id'), primary_key=True)
-    quantity_before = Column(Integer, default=0)
-    quantity_after = Column(Integer, default=0)
-    arise = Column(String(255))
+    quantity = Column(Integer, default=0)
     # books = relationship('Book', backref=backref('detail_inventory_report', lazy=True))
 
 # if __name__ == '__main__':

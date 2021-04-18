@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, current_user, login_required, logout_user
 from app import create_app, db, login_manager, models
-from app.models import User
+from app.models import User, UserRole
 from .forms import RegisterForm, LoginForm
 from . import users_blueprint
 
@@ -49,7 +49,10 @@ def login():
                 db.session.commit()
                 login_user(user, remember=form.remember_me.data)
                 flash('Thanks for logging in, {}!'.format(current_user.username))
-                return redirect(url_for('store_pages.index'))
+                if user.user_role == UserRole.ADMIN:
+                    return redirect("/admin")
+                else:
+                    return redirect(url_for('store_pages.index'))
 
         flash('ERROR! Incorrect login credentials.')
     return render_template('users/login.html', form=form)

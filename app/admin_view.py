@@ -16,6 +16,7 @@ class MyModelView(AuthenticatedView):
     can_create = True
     can_export = True
     can_delete = True
+    create_template = 'create.html'
 
 
 class ContactView(BaseView):
@@ -37,6 +38,7 @@ class LogOutView(BaseView):
 admin.add_view(LogOutView(name="Đăng xuất"))
 admin.add_view(ContactView(name='Liên hệ'))
 
+admin.add_view(MyModelView(User, db.session, name="User"))
 admin.add_view(MyModelView(Customer, db.session, name='Khách hàng'))
 admin.add_view(MyModelView(Author, db.session, name='Tác giả'))
 admin.add_view(MyModelView(Category, db.session, name='Thể loại'))

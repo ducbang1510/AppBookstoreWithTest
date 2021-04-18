@@ -1,5 +1,8 @@
 <!--===== HEADER CONTENT =====-->
 <header id="site-header" class="site-header__v1">
+    {% if get_flashed_messages() %}
+        <div class="alert alert-info alert-dismissible">{{ get_flashed_messages()[0] }}</div>
+    {% endif %}
     <div class="topbar border-bottom d-none d-md-block">
         <div class="container-fluid px-2 px-md-5 px-xl-8d75">
             <div class="topbar__nav d-md-flex justify-content-between align-items-center">
@@ -12,10 +15,10 @@
                 <ul class="topbar__nav--right nav mr-md-n3">
                     <li class="nav-item"><a href="#" class="nav-link link-black-100"><i
                             class="glph-icon flaticon-pin"></i></a></li>
-{#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
-{#                            class="glph-icon flaticon-switch"></i></a></li>#}
-{#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
-{#                            class="glph-icon flaticon-heart"></i></a></li>#}
+                    {#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
+                    {#                            class="glph-icon flaticon-switch"></i></a></li>#}
+                    {#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
+                    {#                            class="glph-icon flaticon-heart"></i></a></li>#}
                     <li class="nav-item">
                         <!-- Account Sidebar Toggle Button -->
                         <a id="sidebarNavToggler" href="javascript:;" role="button" class="nav-link link-black-100"
@@ -57,13 +60,13 @@
                            data-unfold-animation-in="fadeInRight"
                            data-unfold-animation-out="fadeOutRight"
                            data-unfold-duration="500">
-                        {% if cart_info %}
-                            {% if cart_info.total_quantity %}
-                            <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0">{{ cart_info.total_quantity }}</span>
-                            {% else %}
-                            <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0">0</span>
+                            {% if cart_info %}
+                                {% if cart_info.total_quantity %}
+                                    <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0">{{ cart_info.total_quantity }}</span>
+                                {% else %}
+                                    <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0">0</span>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
                             <i class="glph-icon flaticon-icon-126515"></i>
                         </a>
                         <!-- End Cart Sidebar Toggle Button -->
@@ -118,9 +121,9 @@
                         <li class="nav-item"><a href="{{ url_for('store_pages.index') }}"
                                                 class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium active">Trang
                             chủ</a></li>
-{#                        <li class="nav-item"><a href="#"#}
-{#                                                class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium active">Thể#}
-{#                            loại</a></li>#}
+                        {#                        <li class="nav-item"><a href="#"#}
+                        {#                                                class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium active">Thể#}
+                        {#                            loại</a></li>#}
                         <li class="nav-item dropdown">
                             <a id="shopDropdownInvoker" href="#"
                                class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
@@ -142,51 +145,54 @@
                                 <li>
                                     <a href="{{ url_for('store_pages.shop_list', page_num=1) }}"
                                        class="dropdown-item link-black-100">
-                                    Danh sách sản phẩm
+                                        Danh sách sản phẩm
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#" class="dropdown-item link-black-100">
                                         Giỏ hàng
                                     </a>
-                                </li> {# {{ url_for('shop_cart') }} #}
+                                </li>
+                                {# {{ url_for('shop_cart') }} #}
                                 <li>
                                     <a href="#" class="dropdown-item link-black-100">
                                         Thanh toán
                                     </a>
-                                </li> {# {{ url_for('checkout') }} #}
+                                </li>
+                                {# {{ url_for('checkout') }} #}
                                 <li>
                                     <a href="#" class="dropdown-item link-black-100">
                                         Tài khoản của tôi
                                     </a>
-                                </li> {# {{ url_for('my_account') }} #}
+                                </li>
+                                {# {{ url_for('my_account') }} #}
                             </ul>
                         </li>
-{#                        <li class="nav-item dropdown">#}
-{#                            <a id="blogDropdownInvoker" href="#"#}
-{#                               class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"#}
-{#                               aria-haspopup="true"#}
-{#                               aria-expanded="false"#}
-{#                               data-unfold-event="hover"#}
-{#                               data-unfold-target="#blogDropdownMenu"#}
-{#                               data-unfold-type="css-animation"#}
-{#                               data-unfold-duration="200"#}
-{#                               data-unfold-delay="50"#}
-{#                               data-unfold-hide-on-scroll="true"#}
-{#                               data-unfold-animation-in="slideInUp"#}
-{#                               data-unfold-animation-out="fadeOut">#}
-{#                                Blog#}
-{#                            </a>#}
-{#                            <ul id="blogDropdownMenu"#}
-{#                                class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900"#}
-{#                                aria-labelledby="blogDropdownInvoker">#}
-{#                                <li><a href="../blog/blog-v1.html" class="dropdown-item link-black-100">Blog v1</a></li>#}
-{#                                <li><a href="../blog/blog-v2.html" class="dropdown-item link-black-100">Blog v2</a></li>#}
-{#                                <li><a href="../blog/blog-v3.html" class="dropdown-item link-black-100">Blog v3</a></li>#}
-{#                                <li><a href="../blog/blog-single.html" class="dropdown-item link-black-100">Blog#}
-{#                                    Single</a></li>#}
-{#                            </ul>#}
-{#                        </li>#}
+                        {#                        <li class="nav-item dropdown">#}
+                        {#                            <a id="blogDropdownInvoker" href="#"#}
+                        {#                               class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"#}
+                        {#                               aria-haspopup="true"#}
+                        {#                               aria-expanded="false"#}
+                        {#                               data-unfold-event="hover"#}
+                        {#                               data-unfold-target="#blogDropdownMenu"#}
+                        {#                               data-unfold-type="css-animation"#}
+                        {#                               data-unfold-duration="200"#}
+                        {#                               data-unfold-delay="50"#}
+                        {#                               data-unfold-hide-on-scroll="true"#}
+                        {#                               data-unfold-animation-in="slideInUp"#}
+                        {#                               data-unfold-animation-out="fadeOut">#}
+                        {#                                Blog#}
+                        {#                            </a>#}
+                        {#                            <ul id="blogDropdownMenu"#}
+                        {#                                class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900"#}
+                        {#                                aria-labelledby="blogDropdownInvoker">#}
+                        {#                                <li><a href="../blog/blog-v1.html" class="dropdown-item link-black-100">Blog v1</a></li>#}
+                        {#                                <li><a href="../blog/blog-v2.html" class="dropdown-item link-black-100">Blog v2</a></li>#}
+                        {#                                <li><a href="../blog/blog-v3.html" class="dropdown-item link-black-100">Blog v3</a></li>#}
+                        {#                                <li><a href="../blog/blog-single.html" class="dropdown-item link-black-100">Blog#}
+                        {#                                    Single</a></li>#}
+                        {#                            </ul>#}
+                        {#                        </li>#}
                         <li class="nav-item dropdown">
                             <a id="pagesDropdownInvoker" href="#"
                                class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
@@ -207,18 +213,18 @@
                                 aria-labelledby="pagesDropdownInvoker">
                                 <li><a href="../others/404.html" class="dropdown-item link-black-100">404</a></li>
                                 <li><a href="../others/about.html" class="dropdown-item link-black-100">About Us</a>
-{#                                </li>#}
-{#                                <li><a href="../others/authors-list.html" class="dropdown-item link-black-100">Authors#}
-{#                                    List</a></li>#}
-{#                                <li><a href="../others/authors-single.html" class="dropdown-item link-black-100">Authors#}
-{#                                    Single</a></li>#}
-{#                                <li><a href="../others/coming-soon.html" class="dropdown-item link-black-100">Coming#}
-{#                                    Soon</a></li>#}
-{#                                <li><a href="../others/contact.html" class="dropdown-item link-black-100">Contact Us</a>#}
-{#                                </li>#}
-{#                                <li><a href="../others/faq.html" class="dropdown-item link-black-100">FAQ</a></li>#}
-{#                                <li><a href="../others/pricing-table.html" class="dropdown-item link-black-100">Pricing#}
-{#                                    Table</a></li>#}
+                                    {#                                </li>#}
+                                    {#                                <li><a href="../others/authors-list.html" class="dropdown-item link-black-100">Authors#}
+                                    {#                                    List</a></li>#}
+                                    {#                                <li><a href="../others/authors-single.html" class="dropdown-item link-black-100">Authors#}
+                                    {#                                    Single</a></li>#}
+                                    {#                                <li><a href="../others/coming-soon.html" class="dropdown-item link-black-100">Coming#}
+                                    {#                                    Soon</a></li>#}
+                                    {#                                <li><a href="../others/contact.html" class="dropdown-item link-black-100">Contact Us</a>#}
+                                    {#                                </li>#}
+                                    {#                                <li><a href="../others/faq.html" class="dropdown-item link-black-100">FAQ</a></li>#}
+                                    {#                                <li><a href="../others/pricing-table.html" class="dropdown-item link-black-100">Pricing#}
+                                    {#                                    Table</a></li>#}
                                 <li><a href="../others/terms-conditions.html" class="dropdown-item link-black-100">Terms
                                     Conditions</a></li>
                             </ul>
@@ -253,14 +259,16 @@
                 </ul>
 
                 <div class="site-search ml-xl-0 ml-md-auto w-r-100 my-2 my-xl-0">
-                    <form class="form-inline" action="#"> {# {{ url_for('shop_filter') }} #}
+                    <form class="form-inline" action="{{ url_for('store_pages.shop_filter') }}">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <i class="glph-icon flaticon-loupe input-group-text py-2d75 bg-white-100 border-white-100"></i>
                             </div>
                             <input class="form-control bg-white-100 min-width-380 py-2d75 height-4 border-white-100"
-                                   name="kw"
-                                   type="search" placeholder="Tìm kiếm bằng từ khóa ..." aria-label="Search">
+                                   name="kw" , id="kw"
+                                   type="search" placeholder="Tìm kiếm bằng từ khóa ..." aria-label="Search"
+                                   oninvalid="this.setCustomValidity('Vui lòng điền vào ô để tìm kiếm')"
+                                   required>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0 sr-only" type="submit">Search</button>
                     </form>
@@ -397,7 +405,8 @@
                                     <!-- Form Group -->
                                     <div class="form-group mb-4">
                                         <div class="js-form-message js-focus-state">
-                                            <label id="signinPasswordLabel11" class="form-label" for="signinPassword11">Mật khẩu
+                                            <label id="signinPasswordLabel11" class="form-label" for="signinPassword11">Mật
+                                                khẩu
                                                 *</label>
                                             <input type="password" class="form-control rounded-0 height-4 px-4"
                                                    name="password" id="signinPassword11" placeholder="" aria-label=""
@@ -514,220 +523,180 @@
                 <!-- Content -->
                 <div class="js-scrollbar u-sidebar__body">
                     <div class="u-sidebar__content u-header-sidebar__content">
-{#                        <form class="">#}
-                            <!-- Login -->
-                            <div id="login" data-target-group="idForm">
-                                <!-- Title -->
-                                <header class="border-bottom px-4 px-md-6 py-4">
-                                    <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
-                                            class="flaticon-user mr-3 font-size-5"></i>Tài khoản</h2>
-                                </header>
-                                <!-- End Title -->
-                                <form  method="post" action="{{ url_for('users.login') }}">
-                                    <div class="p-4 p-md-6">
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="signinEmailLabel" class="form-label" for="signinEmail">Username *</label>
-                                                <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                       name="username" id="signinEmail"
-                                                       placeholder=""
-                                                       aria-label="creativelayers088@gmail.com"
-                                                       aria-describedby="signinEmailLabel" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Form Group -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="signinPasswordLabel" class="form-label" for="signinPassword">Mật khẩu
-                                                    *</label>
-                                                <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                       name="password" id="signinPassword" placeholder="" aria-label=""
-                                                       aria-describedby="signinPasswordLabel" required>
-                                            </div>
-                                        </div>
-
-                                        <!-- End Form Group -->
-
-                                        <div class="d-flex justify-content-between mb-5 align-items-center">
-                                            <!-- Checkbox -->
-                                            <div class="js-form-message">
-                                                <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
-                                                    <input type="checkbox" class="custom-control-input" id="termsCheckbox"
-                                                           name="termsCheckbox">
-                                                    <label class="custom-control-label" for="termsCheckbox">
-                                                        <span class="font-size-2 text-secondary-gray-700">
-                                                            Nhớ mật khẩu
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <!-- End Checkbox -->
-
-                                            <a class="js-animation-link text-dark font-size-2 t-d-u link-muted font-weight-medium"
-                                               href="javascript:;"
-                                               data-target="#forgotPassword"
-                                               data-link-group="idForm"
-                                               data-animation-in="fadeIn">Quên mật khẩu?</a>
-                                        </div>
-
-                                        <div class="mb-4d75">
-                                            <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">Đăng nhập
-                                            </button>
-                                        </div>
-
-                                        <div class="mb-2">
-                                            <a href="javascript:;"
-                                               class="js-animation-link btn btn-block py-3 rounded-0 btn-outline-dark font-weight-medium"
-                                               data-target="#signup"
-                                               data-link-group="idForm"
-                                               data-animation-in="fadeIn">Tạo tài khoản</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Signup -->
-                            <div id="signup" style="display: none; opacity: 0;" data-target-group="idForm">
-                                <!-- Title -->
-                                <header class="border-bottom px-4 px-md-6 py-4">
-                                    <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
-                                            class="flaticon-resume mr-3 font-size-5"></i>Tạo tài khoản</h2>
-                                </header>
-                                <!-- End Title -->
-                                <form method="post" action="{{ url_for('users.register') }}" onsubmit="return validate()" enctype="multipart/form-data">
-                                    <div class="p-4 p-md-6">
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="nameLabel1" class="form-label" for="name_dk">Họ và tên
-                                                    *</label>
-                                                <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                       name="name_dk" id="name_dk"
-                                                       placeholder=""
-                                                       aria-label="creativelayers088@gmail.com"
-                                                       aria-describedby="signinEmailLabel1" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Form Group -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="emailLabel1" class="form-label" for="email_dk">Email
-                                                    *</label>
-                                                <input type="email" class="form-control rounded-0 height-4 px-4"
-                                                       name="email_dk" id="email_dk"
-                                                       placeholder="creativelayers088@gmail.com"
-                                                       aria-label="creativelayers088@gmail.com"
-                                                       aria-describedby="signinEmailLabel1" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Form Group -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="usernameLabel1" class="form-label" for="username_dk">Username
-                                                    *</label>
-                                                <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                       name="username_dk" id="username_dk"
-                                                       placeholder=""
-                                                       aria-label="creativelayers088@gmail.com"
-                                                       aria-describedby="signinEmailLabel1" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Form Group -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="passwordLabel1" class="form-label" for="password_dk">Mật khẩu
-                                                    *</label>
-                                                <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                       name="password_dk" id="password_dk" placeholder="" aria-label=""
-                                                       aria-describedby="signinPasswordLabel1" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Form Group -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state">
-                                                <label id="confirmPasswordLabel" class="form-label"
-                                                       for="password-repeat">Xác nhận mật khẩu *</label>
-                                                <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                       name="password-repeat" id="password-repeat" placeholder=""
-                                                       aria-label="" aria-describedby="signupConfirmPasswordLabel" required>
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <!-- Form Group -->
-                                        <div class="form-group mb-4">
-                                            <div class="js-form-message js-focus-state custom-file mb-4">
-                                                <label id="avatarLabel" class="custom-file-label"
-                                                       for="avatar">Ảnh đại diện</label>
-                                                <input type="file" class="custom-file-input rounded-0 height-4 px-4"
-                                                       name="avatar" id="avatar" placeholder=""
-                                                       aria-label="" aria-describedby="upAvatar">
-                                            </div>
-                                        </div>
-                                        <!-- End Input -->
-
-                                        <div class="mb-3">
-                                            <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">
-                                                Tạo tài khoản
-                                            </button>
-                                        </div>
-
-                                        <div class="text-center mb-4">
-                                            <span class="small text-muted">Đã có tài khoản?</span>
-                                            <a class="js-animation-link small" href="javascript:;"
-                                               data-target="#login"
-                                               data-link-group="idForm"
-                                               data-animation-in="fadeIn">Đăng nhập
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- End Signup -->
-
-                            <!-- Forgot Password -->
-                            <div id="forgotPassword" style="display: none; opacity: 0;" data-target-group="idForm">
-                                <!-- Title -->
-                                <header class="border-bottom px-4 px-md-6 py-4">
-                                    <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
-                                            class="flaticon-question mr-3 font-size-5"></i>Quên mật khẩu?</h2>
-                                </header>
-                                <!-- End Title -->
-
+                        {#                        <form class="">#}
+                        <!-- Login -->
+                        <div id="login" data-target-group="idForm">
+                            <!-- Title -->
+                            <header class="border-bottom px-4 px-md-6 py-4">
+                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
+                                        class="flaticon-user mr-3 font-size-5"></i>Tài khoản</h2>
+                            </header>
+                            <!-- End Title -->
+                            <form method="post" action="{{ url_for('users.login') }}">
                                 <div class="p-4 p-md-6">
                                     <!-- Form Group -->
                                     <div class="form-group mb-4">
                                         <div class="js-form-message js-focus-state">
-                                            <label id="signinEmailLabel3" class="form-label" for="signinEmail3">Email
+                                            <label id="signinEmailLabel" class="form-label" for="signinEmail">Username
                                                 *</label>
-                                            <input type="email" class="form-control rounded-0 height-4 px-4"
-                                                   name="email" id="signinEmail3"
-                                                   placeholder="creativelayers088@gmail.com"
+                                            <input type="text" class="form-control rounded-0 height-4 px-4"
+                                                   name="username" id="signinEmail"
+                                                   placeholder=""
                                                    aria-label="creativelayers088@gmail.com"
-                                                   aria-describedby="signinEmailLabel3" required>
+                                                   aria-describedby="signinEmailLabel" required>
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
 
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="signinPasswordLabel" class="form-label" for="signinPassword">Mật
+                                                khẩu
+                                                *</label>
+                                            <input type="password" class="form-control rounded-0 height-4 px-4"
+                                                   name="password" id="signinPassword" placeholder="" aria-label=""
+                                                   aria-describedby="signinPasswordLabel" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- End Form Group -->
+
+                                    <div class="d-flex justify-content-between mb-5 align-items-center">
+                                        <!-- Checkbox -->
+                                        <div class="js-form-message">
+                                            <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
+                                                <input type="checkbox" class="custom-control-input" id="termsCheckbox"
+                                                       name="termsCheckbox">
+                                                <label class="custom-control-label" for="termsCheckbox">
+                                                        <span class="font-size-2 text-secondary-gray-700">
+                                                            Nhớ mật khẩu
+                                                        </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- End Checkbox -->
+
+                                        <a class="js-animation-link text-dark font-size-2 t-d-u link-muted font-weight-medium"
+                                           href="javascript:;"
+                                           data-target="#forgotPassword"
+                                           data-link-group="idForm"
+                                           data-animation-in="fadeIn">Quên mật khẩu?</a>
+                                    </div>
+
+                                    <div class="mb-4d75">
+                                        <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">Đăng nhập
+                                        </button>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <a href="javascript:;"
+                                           class="js-animation-link btn btn-block py-3 rounded-0 btn-outline-dark font-weight-medium"
+                                           data-target="#signup"
+                                           data-link-group="idForm"
+                                           data-animation-in="fadeIn">Tạo tài khoản</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Signup -->
+                        <div id="signup" style="display: none; opacity: 0;" data-target-group="idForm">
+                            <!-- Title -->
+                            <header class="border-bottom px-4 px-md-6 py-4">
+                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
+                                        class="flaticon-resume mr-3 font-size-5"></i>Tạo tài khoản</h2>
+                            </header>
+                            <!-- End Title -->
+                            <form method="post" action="{{ url_for('users.register') }}" onsubmit="return validate()"
+                                  enctype="multipart/form-data">
+                                <div class="p-4 p-md-6">
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="nameLabel1" class="form-label" for="name_dk">Họ và tên
+                                                *</label>
+                                            <input type="text" class="form-control rounded-0 height-4 px-4"
+                                                   name="name_dk" id="name_dk"
+                                                   placeholder=""
+                                                   aria-label="creativelayers088@gmail.com"
+                                                   aria-describedby="signinEmailLabel1" required>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="emailLabel1" class="form-label" for="email_dk">Email
+                                                *</label>
+                                            <input type="email" class="form-control rounded-0 height-4 px-4"
+                                                   name="email_dk" id="email_dk"
+                                                   placeholder="creativelayers088@gmail.com"
+                                                   aria-label="creativelayers088@gmail.com"
+                                                   aria-describedby="signinEmailLabel1" required>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="usernameLabel1" class="form-label" for="username_dk">Username
+                                                *</label>
+                                            <input type="text" class="form-control rounded-0 height-4 px-4"
+                                                   name="username_dk" id="username_dk"
+                                                   placeholder=""
+                                                   aria-label="creativelayers088@gmail.com"
+                                                   aria-describedby="signinEmailLabel1" required>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="passwordLabel1" class="form-label" for="password_dk">Mật khẩu
+                                                *</label>
+                                            <input type="password" class="form-control rounded-0 height-4 px-4"
+                                                   name="password_dk" id="password_dk" placeholder="" aria-label=""
+                                                   aria-describedby="signinPasswordLabel1" required>
+                                        </div>
+                                    </div>
+                                    <!-- End Form Group -->
+
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state">
+                                            <label id="confirmPasswordLabel" class="form-label"
+                                                   for="password-repeat">Xác nhận mật khẩu *</label>
+                                            <input type="password" class="form-control rounded-0 height-4 px-4"
+                                                   name="password-repeat" id="password-repeat" placeholder=""
+                                                   aria-label="" aria-describedby="signupConfirmPasswordLabel" required>
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+
+                                    <!-- Form Group -->
+                                    <div class="form-group mb-4">
+                                        <div class="js-form-message js-focus-state custom-file mb-4">
+                                            <label id="avatarLabel" class="custom-file-label"
+                                                   for="avatar">Ảnh đại diện</label>
+                                            <input type="file" class="custom-file-input rounded-0 height-4 px-4"
+                                                   name="avatar" id="avatar" placeholder=""
+                                                   aria-label="" aria-describedby="upAvatar">
+                                        </div>
+                                    </div>
+                                    <!-- End Input -->
+
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">
-                                            Phục hồi mật khẩu
+                                            Tạo tài khoản
                                         </button>
                                     </div>
 
                                     <div class="text-center mb-4">
-                                        <span class="small text-muted">Quên mật khẩu?</span>
+                                        <span class="small text-muted">Đã có tài khoản?</span>
                                         <a class="js-animation-link small" href="javascript:;"
                                            data-target="#login"
                                            data-link-group="idForm"
@@ -735,9 +704,52 @@
                                         </a>
                                     </div>
                                 </div>
+                            </form>
+                        </div>
+                        <!-- End Signup -->
+
+                        <!-- Forgot Password -->
+                        <div id="forgotPassword" style="display: none; opacity: 0;" data-target-group="idForm">
+                            <!-- Title -->
+                            <header class="border-bottom px-4 px-md-6 py-4">
+                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
+                                        class="flaticon-question mr-3 font-size-5"></i>Quên mật khẩu?</h2>
+                            </header>
+                            <!-- End Title -->
+
+                            <div class="p-4 p-md-6">
+                                <!-- Form Group -->
+                                <div class="form-group mb-4">
+                                    <div class="js-form-message js-focus-state">
+                                        <label id="signinEmailLabel3" class="form-label" for="signinEmail3">Email
+                                            *</label>
+                                        <input type="email" class="form-control rounded-0 height-4 px-4"
+                                               name="email" id="signinEmail3"
+                                               placeholder="creativelayers088@gmail.com"
+                                               aria-label="creativelayers088@gmail.com"
+                                               aria-describedby="signinEmailLabel3" required>
+                                    </div>
+                                </div>
+                                <!-- End Form Group -->
+
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">
+                                        Phục hồi mật khẩu
+                                    </button>
+                                </div>
+
+                                <div class="text-center mb-4">
+                                    <span class="small text-muted">Quên mật khẩu?</span>
+                                    <a class="js-animation-link small" href="javascript:;"
+                                       data-target="#login"
+                                       data-link-group="idForm"
+                                       data-animation-in="fadeIn">Đăng nhập
+                                    </a>
+                                </div>
                             </div>
-                            <!-- End Forgot Password -->
-{#                        </form>#}
+                        </div>
+                        <!-- End Forgot Password -->
+                        {#                        </form>#}
                     </div>
                 </div>
                 <!-- End Content -->
@@ -775,46 +787,51 @@
                     <div class="u-sidebar__content u-header-sidebar__content">
                         <!-- Title -->
                         <header class="border-bottom px-4 px-md-6 py-4">
-                        {% if cart_info %}
-                            {% if cart_info.total_quantity %}
-                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
-                                        class="flaticon-icon-126515 mr-3 font-size-5"></i>Giỏ hàng của bạn ({{ cart_info.total_quantity }})
-                                </h2>
-                            {% else %}
-                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
-                                        class="flaticon-icon-126515 mr-3 font-size-5"></i>Giỏ hàng của bạn (0)
-                                </h2>
+                            {% if cart_info %}
+                                {% if cart_info.total_quantity %}
+                                    <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
+                                            class="flaticon-icon-126515 mr-3 font-size-5"></i>Giỏ hàng của bạn
+                                        ({{ cart_info.total_quantity }})
+                                    </h2>
+                                {% else %}
+                                    <h2 class="font-size-3 mb-0 d-flex align-items-center"><i
+                                            class="flaticon-icon-126515 mr-3 font-size-5"></i>Giỏ hàng của bạn (0)
+                                    </h2>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
                         </header>
                         <!-- End Title -->
                         {% if 'cart' in session %}
                             {% for b in session['cart'].values() %}
                                 {% if b.quantity > 0 %}
-                                <div class="px-4 py-5 px-md-6 border-bottom" id="book{{ b.id }}">
-                                    <div class="media">
-                                        <a href="#" class="d-block"><img src="{{ url_for('static', filename=b.image) }}" class="img-fluid"
-                                                                         alt="image-description" width="100px" height="153px">
-                                        </a>
-                                        <div class="media-body ml-4d875">
-                                            <div class="text-primary text-uppercase font-size-1 mb-1 text-truncate"><a href="#">Hard
-                                                Cover</a></div>
-                                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2">
-                                                <a href="#" class="text-dark">{{ b.name }}</a>
-                                            </h2>
-                                            <div class="font-size-2 mb-1 text-truncate"><a href="#" class="text-gray-700">Robert
-                                                Iger</a></div>
-                                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
+                                    <div class="px-4 py-5 px-md-6 border-bottom" id="book{{ b.id }}">
+                                        <div class="media">
+                                            <a href="#" class="d-block"><img
+                                                    src="{{ url_for('static', filename=b.image) }}" class="img-fluid"
+                                                    alt="image-description" width="100px" height="153px">
+                                            </a>
+                                            <div class="media-body ml-4d875">
+                                                <div class="text-primary text-uppercase font-size-1 mb-1 text-truncate">
+                                                    <a href="#">Hard
+                                                        Cover</a></div>
+                                                <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2">
+                                                    <a href="#" class="text-dark">{{ b.name }}</a>
+                                                </h2>
+                                                <div class="font-size-2 mb-1 text-truncate"><a href="#"
+                                                                                               class="text-gray-700">Robert
+                                                    Iger</a></div>
+                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                                 <span class="woocommerce-Price-amount amount">{{ b.quantity }} x <span
                                                         class="woocommerce-Price-currencySymbol"></span>{{ b.price }} VND</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 ml-3">
+                                                <a href="javascript:;"
+                                                   onclick="delete_item({{ b.id }})" class="text-dark"><i
+                                                        class="fas fa-times"></i></a>
                                             </div>
                                         </div>
-                                        <div class="mt-3 ml-3">
-                                            <a href="javascript:;"
-                                               onclick="delete_item({{ b.id }})" class="text-dark"><i class="fas fa-times"></i></a>
-                                        </div>
                                     </div>
-                                </div>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
@@ -825,19 +842,20 @@
 
                         <div class="px-4 py-5 px-md-6 d-flex justify-content-between align-items-center font-size-3">
                             <h4 class="mb-0 font-size-3">Tổng:</h4>
-                        {% if cart_info %}
-                            {% if cart_info.total_amount %}
-                            <div class="font-weight-medium">{{ cart_info.total_amount }} VND</div>
-                            {% else %}
-                            <div class="font-weight-medium">0 VND</div>
+                            {% if cart_info %}
+                                {% if cart_info.total_amount %}
+                                    <div class="font-weight-medium">{{ cart_info.total_amount }} VND</div>
+                                {% else %}
+                                    <div class="font-weight-medium">0 VND</div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
                         </div>
 
                         <div class="px-4 mb-8 px-md-6">
                             <a href="#" class="btn btn-block py-4 rounded-0 btn-outline-dark mb-4">Xem giỏ hàng
                             </a> {# {{ url_for('shop_cart') }} #}
-                            <a href="#" class="btn btn-block py-4 rounded-0 btn-dark">Thanh toán</a> {# {{ url_for('checkout') }} #}
+                            <a href="#" class="btn btn-block py-4 rounded-0 btn-dark">Thanh toán</a>
+                            {# {{ url_for('checkout') }} #}
                         </div>
                     </div>
                 </div>
@@ -885,7 +903,7 @@
                                 <ul>
                                     {% for cat in categories %}
                                         <li class="menu">
-                                            <a href="#">{{ cat.name }}</a> {# {{ url_for('shop_filter', category_id = cat.id) }} #}
+                                            <a href="{{ url_for('store_pages.shop_filter', category_id = cat.id) }}">{{ cat.name }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -896,12 +914,16 @@
                             <h2 class="font-size-3 mb-3">TRỢ GIÚP VÀ CÀI ĐẶT </h2>
                             <ul class="list-group list-group-flush list-group-borderless">
                                 <li class="list-group-item px-0 py-2 border-0">
-                                    <a href="#" class="h-primary">Tài khoản của bạn</a> {# {{ url_for('my_account') }} #}
+                                    <a href="#" class="h-primary">Tài khoản của bạn</a>
+                                    {# {{ url_for('my_account') }} #}
                                 </li>
-                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Trợ giúp</a>
+                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Trợ
+                                    giúp</a>
                                 </li>
-                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Đăng nhập</a>
-                                </li> {# {{ url_for('admin.index') }} #}
+                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Đăng
+                                    nhập</a>
+                                </li>
+                                {# {{ url_for('admin.index') }} #}
                             </ul>
                         </div>
 
