@@ -1,7 +1,7 @@
 from flask import url_for
 from flask_login import current_user
 
-from tests.base_test import BaseTestCase
+from tests.base_test import BaseTestCase, create_data
 from app.models import *
 
 
@@ -10,27 +10,25 @@ class UserViewsTests(BaseTestCase):
         with self.client:
             response = self.client.get('/login')
 
-            assert response.status_code == 200
-            assert b'Login' in response.data
-            assert b'Username' in response.data
-            assert b'Password' in response.data
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(b'Login' in response.data)
+            self.assertTrue(b'Username' in response.data)
+            self.assertTrue(b'Password' in response.data)
 
     def test_valid_login(self):
-        User.create(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456')
-
+        create_data()
         with self.client:
             response = self.client.post("/login", data=dict(username='admin123', password='123456'),
                                         follow_redirects=True)
 
-            assert response.status_code == 200
+            self.assertTrue(response.status_code == 200)
             self.assertTrue(current_user.username == "admin123")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)
             self.assertFalse(current_user.is_anonymous)
 
     def test_valid_login_can_logout(self):
-        User.create(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456')
-
+        create_data()
         with self.client:
             response = self.client.post("/login", data=dict(username='admin123', password='123456'),
                                         follow_redirects=True)
@@ -44,9 +42,7 @@ class UserViewsTests(BaseTestCase):
             self.assertTrue(current_user.is_anonymous)
 
     def test_login_already_logged_in(self):
-        User.create(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456')
-        User.create(name='Tran Bang', email='abdc@gmail.com', username='admin456', password='654321')
-
+        create_data()
         with self.client:
             self.client.post("/login", data=dict(username='admin123', password='123456'),
                              follow_redirects=True)
@@ -58,8 +54,7 @@ class UserViewsTests(BaseTestCase):
             self.assertFalse(current_user.username == "admin456")
 
     def test_invalid_login(self):
-        User.create(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456')
-
+        create_data()
         with self.client:
             self.client.post("/login", data=dict(username='admin123', password='12345671'),
                              follow_redirects=True)
@@ -67,6 +62,7 @@ class UserViewsTests(BaseTestCase):
             self.assertTrue(current_user.is_anonymous)
 
     def test_valid_registration(self):
+        create_data()
         with self.client:
             response = self.client.post("/register",
                                         data=dict(name='Anh Khoa',
@@ -83,6 +79,7 @@ class UserViewsTests(BaseTestCase):
             self.assertFalse(current_user.is_anonymous)
 
     def test_invalid_registration(self):
+        create_data()
         with self.client:
             response = self.client.post("/register",
                                         data=dict(name='Anh Khoa',
@@ -98,8 +95,7 @@ class UserViewsTests(BaseTestCase):
             self.assertTrue(current_user.is_anonymous)
 
     def test_duplicate_registration(self):
-        User.create(name='Tran Bang', email='abdc@gmail.com', username='admin456', password='654321')
-
+        create_data()
         with self.client:
             response = self.client.post("/register",
                                         data=dict(name='Tran Duc Bang',

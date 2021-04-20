@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, session
+from flask import Blueprint, render_template, redirect, url_for, flash, request, session, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
 from app import create_app, db, login_manager, models, get_data, utils
 from app.models import *
@@ -103,3 +103,142 @@ def shop_filter():
                            categories=categories,
                            author_list=author_list,
                            cart_info=cart_info)
+
+
+# Thêm sản phẩm vào giỏ hàng
+@store_pages_blueprint.route('/api/cart', methods=['post'])
+def add_to_cart():
+    if 'cart' not in session:
+        session['cart'] = {}
+
+    data = request.json
+    book_id = str(data.get('id'))
+    book_name = data.get('name')
+    image = data.get('image')
+    price = data.get('price')
+
+    cart = session['cart']
+
+    if book_id in cart:  # co san pham trong gio
+        quan = cart[book_id]['quantity']
+        cart[book_id]['quantity'] = int(quan) + 1
+        subp = cart[book_id]['subTotal']
+        cart[book_id]['subTotal'] = float(subp) + price
+    else:  # chua co san pham trong gio
+        cart[book_id] = {
+            "id": book_id,
+            "name": book_name,
+            "image": image,
+            "price": price,
+            "quantity": 1,
+            "subTotal": price
+        }
+
+    session['cart'] = cart
+
+    total_quan, total_amount = utils.cart_stats(session['cart'])
+
+    return jsonify({
+        "message": "Thêm giỏ hàng thành công",
+        'total_amount': total_amount,
+        'total_quantity': total_quan
+    })
+
+
+#Bớt một sản phẩm khỏi giỏ hàng
+@store_pages_blueprint.route('/api/remove-item-cart', methods=['post'])
+def remove_from_cart():
+    data = request.json
+    book_id = str(data.get('id'))
+    book_name = data.get('name')
+    image = data.get('image')
+    price = data.get('price')
+
+    cart = session['cart']
+    if book_id in cart:  # co san pham trong gio
+        quan = cart[book_id]['quantity']
+        cart[book_id]['quantity'] = int(quan) - 1
+        subp = cart[book_id]['subTotal']
+        cart[book_id]['subTotal'] = float(subp) - price
+    else:  # chua co san pham trong gio
+        cart[book_id] = {
+            "id": book_id,
+            "name": book_name,
+            "image": image,
+            "price": price,
+            "quantity": 1,
+            "subTotal": price
+        }
+
+    session['cart'] = cart
+
+    total_quan, total_amount = utils.cart_stats(session['cart'])
+
+    return jsonify({
+        "message": "Cập nhật giỏ hàng thành công",
+        'total_amount': total_amount,
+        'total_quantity': total_quan
+    })
+
+
+#Xóa giỏ hàng
+@store_pages_blueprint.route("/api/cart/<int:b_id>", methods=["delete"])
+def delete_item(b_id):
+    data = request.json
+    book_id = str(data.get('id'))
+
+    cart = session.get('cart')
+    for idx, b in enumerate(cart.values()):
+        if b['id'] == b_id:
+            del cart[idx]
+            break
+
+    cart = session['cart']
+
+    if book_id in cart:
+        cart[book_id]['quantity'] = 0
+        cart[book_id]['subTotal'] = 0
+
+    session['cart'] = cart
+
+    total_quan, total_amount = utils.cart_stats(session['cart'])
+    return jsonify({
+        "message": "Xoa thanh cong",
+        "data": {"book_id": b_id},
+        'total_amount': total_amount,
+        'total_quantity': total_quan
+    })
+
+
+# Trang giỏ hàng
+@store_pages_blueprint.route("/shop-cart")
+def shop_cart():
+    categories = get_data.get_category()
+
+    quan, price = utils.cart_stats(session.get('cart'))
+    cart_info = {
+        'total_quantity': quan,
+        'total_amount': price
+    }
+    return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info)
+
+
+#Trang thanh toán
+@store_pages_blueprint.route("/checkout", methods=['get', 'post'])
+def checkout():
+    categories = get_data.get_category()
+
+    if request.method == 'POST':
+
+        if utils.add_invoice(session.get('cart')):
+            del session['cart']
+
+            return jsonify({"message": "Đặt hàng thành công"})
+
+    quan, price = utils.cart_stats(session.get('cart'))
+    cart_info = {
+        'total_quantity': quan,
+        'total_amount': price
+    }
+
+    return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info)

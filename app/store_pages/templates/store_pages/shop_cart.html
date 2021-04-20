@@ -130,7 +130,7 @@
                                             {% endif %}
                                             <tr>
                                                 <td colspan="5" class="actions">
-                                                    <a href="{{ url_for('shop_cart') }}"
+                                                    <a href="{{ url_for('store_pages.shop_cart') }}"
                                                        class="button btn btn-warning">Cập nhật giỏ hàng</a>
                                                     <input type="hidden" id="_wpnonce" name="_wpnonce"
                                                            value="db025d7a70"><input type="hidden"
@@ -140,7 +140,7 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="5" class="actions">
-                                                    <a href="{{ url_for('shop_list', page_num = 1) }}"
+                                                    <a href="{{ url_for('store_pages.shop_list', page_num = 1) }}"
                                                        class="button btn btn-dark">Tiếp tục mua sắm</a>
                                                     <input type="hidden" id="_wpnonce" name="_wpnonce"
                                                            value="db025d7a70"><input type="hidden"
@@ -250,7 +250,7 @@
                         </div>
                     </div>
                     <div class="wc-proceed-to-checkout">
-                        <a href="{{ url_for('checkout') }}">
+                        <a href="{{ url_for('store_pages.checkout') }}">
                         <input type="button"
                                value="Tiến hành thanh toán"
                                class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4" />

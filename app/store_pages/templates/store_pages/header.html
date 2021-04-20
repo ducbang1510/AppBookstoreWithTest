@@ -149,17 +149,17 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="dropdown-item link-black-100">
+                                    <a href="{{ url_for('store_pages.shop_cart') }}"
+                                       class="dropdown-item link-black-100">
                                         Giỏ hàng
                                     </a>
                                 </li>
-                                {# {{ url_for('shop_cart') }} #}
                                 <li>
-                                    <a href="#" class="dropdown-item link-black-100">
+                                    <a href="{{ url_for('store_pages.checkout') }}"
+                                       class="dropdown-item link-black-100">
                                         Thanh toán
                                     </a>
                                 </li>
-                                {# {{ url_for('checkout') }} #}
                                 <li>
                                     <a href="#" class="dropdown-item link-black-100">
                                         Tài khoản của tôi
@@ -852,10 +852,14 @@
                         </div>
 
                         <div class="px-4 mb-8 px-md-6">
-                            <a href="#" class="btn btn-block py-4 rounded-0 btn-outline-dark mb-4">Xem giỏ hàng
-                            </a> {# {{ url_for('shop_cart') }} #}
-                            <a href="#" class="btn btn-block py-4 rounded-0 btn-dark">Thanh toán</a>
-                            {# {{ url_for('checkout') }} #}
+                            <a href="{{ url_for('store_pages.shop_cart') }}"
+                               class="btn btn-block py-4 rounded-0 btn-outline-dark mb-4">
+                                Xem giỏ hàng
+                            </a>
+                            <a href="{{ url_for('store_pages.checkout') }} "
+                               class="btn btn-block py-4 rounded-0 btn-dark">
+                                Thanh toán
+                            </a>
                         </div>
                     </div>
                 </div>
