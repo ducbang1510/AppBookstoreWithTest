@@ -24,8 +24,9 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='vendors/css/vendor.bundle.base.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='vendors/css/vendor.bundle.addons.css') }}">
         <!-- endinject -->
-        <!-- plugin css for this page -->
-        <!-- End plugin css for this page -->
+        <!-- plugin js for this page -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!-- End plugin js for this page -->
         <!-- inject:css -->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/shared/style.css') }}">
         <!-- endinject -->
@@ -33,6 +34,11 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/demo_1/style.css') }}">
         <!-- End Layout styles -->
         <link rel="shortcut icon" href="{{ url_for('static', filename='assets/img/favicon.png') }}"/>
+        <script>
+            function delete_flash(flash) {
+                $(flash).parent().remove()
+            }
+        </script>
     {% endblock %}
 </head>
 {% block body %}
@@ -58,7 +64,10 @@
 
     <!-- flash messages -->
     {% for info_message in get_flashed_messages() %}
-        <div class="alert alert-info alert-dismissible">{{ info_message }}</div>
+        <div class="alert alert-info alert-dismissible">
+        <i class="glyphicon glyphicon-remove" onclick=delete_flash(this)></i>
+            {{ info_message }}
+        </div>
     {% endfor %}
 
 

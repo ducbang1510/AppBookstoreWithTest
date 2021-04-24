@@ -36,6 +36,26 @@ function removeFromCart(bookId, bookName, image, price) {
     })
 }
 
+function updateCartByInput(bookId, bookName, image, price) {
+    fetch('/api/add_remove_cart', {
+        method: 'POST',
+        body: JSON.stringify({
+            "id": bookId,
+            "name": bookName,
+            "image": image,
+            "price": price,
+            "quantity": document.getElementById('quantity' + bookId).value
+        }),
+        headers: {
+            "Content-Type": 'application/json'
+        }
+    }).then(res => res.json()).then(data => {
+        console.info(data);
+        // alert(data.message);
+        window.location.reload(true);
+    })
+}
+
 
 function pay() {
     if(confirm("Xác nhận đặt hàng ?") == true)
@@ -47,7 +67,5 @@ function pay() {
         }).then(res => res.json()).then(data => {
             alert(data.message);
             window.location.reload(true);
-        }).catch(res => {
-            console.log(res);
         })
 }
