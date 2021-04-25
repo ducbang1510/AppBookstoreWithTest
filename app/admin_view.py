@@ -44,7 +44,7 @@ class LogOutView(BaseView):
         return current_user.is_authenticated
 
 
-class TempBookView(AuthenticatedView):
+class TempBookView(BaseView):
     @expose('/')
     def index(self):
 
