@@ -53,6 +53,9 @@ class TempBookView(AuthenticatedView):
 
         return self.render('customs/temp_book.html', categories=categories, authors=authors)
 
+    def is_accessible(self):
+        return current_user.is_authenticated
+
 
 admin.add_view(LogOutView(name="Đăng xuất"))
 admin.add_view(ContactView(name='Liên hệ'))
