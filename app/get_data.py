@@ -65,11 +65,19 @@ def filter_book(cate_id=None, author_id=None, min_price=None, max_price=None, kw
     return books.all()
 
 
+def get_customer(customer):
+    c = Customer.query.filter_by(name=customer.name,
+                                 address=customer.address,
+                                 phone=customer.phone,
+                                 email=customer.email).first()
+
+    return c
+
+
 def get_data_report():
     data = db.session.query(Book.name.label('book_name'),
                             Book.price.label('price'),
-                            DetailInventoryReport.quantity_before.label('quantity_before'),
-                            DetailInventoryReport.quantity_after.label('quantity_after'),
+                            DetailInventoryReport.quantity.label('quantity'),
                             InventoryReport.report_date.label('report_date')) \
         .join(Book, Book.id == DetailInventoryReport.book_id) \
         .join(InventoryReport, DetailInventoryReport.report_id == InventoryReport.id)

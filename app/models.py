@@ -71,18 +71,18 @@ class Customer(db.Model, CRUDMixin):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
-    username = Column(String(100), nullable=False, unique=True)
-    password = Column(String(100), nullable=False)
+    username = Column(String(100), nullable=True, unique=True)
+    password = Column(String(100), nullable=True)
     address = Column(String(255))
     phone = Column(String(20), nullable=True)
     email = Column(String(50), nullable=True)
 
     # invoices = relationship('Invoice', backref='customer', lazy=True)
 
-    def __init__(self, name, username, password, address=None, phone=None, email=None):
+    def __init__(self, name, address=None, phone=None, email=None):
         self.name = name
-        self.username = username
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # self.username = username
+        # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.address = address
         self.phone = phone
         self.email = email
@@ -113,9 +113,6 @@ class Book(db.Model, CRUDMixin):
     authors = relationship('Author', secondary='book_author', lazy='subquery', backref=backref('books', lazy=True))
 
     # images = relationship('Bookimage', backref=backref('books', lazy=True))
-    # invoices = relationship('Invoice', secondary='detail_invoice', lazy='subquery', backref=backref('books', lazy=True))
-    # inventory_reports = relationship('InventoryReport', secondary='detail_inventory_report', lazy='subquery',
-    #                                  backref=backref('books', lazy=True))
 
     def __init__(self, name, quantity, content=None, description=None, image=None, price=None):
         self.name = name
@@ -126,7 +123,7 @@ class Book(db.Model, CRUDMixin):
         self.quantity = quantity
 
     def __str__(self):
-        return self.name
+        return "Tên sách: %s, số lượng: %s" % (str(self.name), str(self.quantity))
 
 
 class Bookimage(db.Model):
@@ -175,8 +172,9 @@ class Author(db.Model, CRUDMixin):
     name = Column(String(50), nullable=False)
     image = Column(String(255))
 
-    def __init__(self, name):
+    def __init__(self, name, image=None):
         self.name = name
+        self.image = image
 
     def __str__(self):
         return self.name
@@ -199,6 +197,7 @@ class Invoice(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     date_of_invoice = Column(Date, default=datetime.now())
     total = Column(Float, default=0)
+    note = Column(LONGTEXT, nullable=True)
     customer_id = Column(Integer, ForeignKey('customer.id'))
 
     def __str__(self):
@@ -215,8 +214,8 @@ class DetailInvoice(db.Model):
     quantity = Column(Integer, default=0)
     price = Column(Float, default=0)
 
-    # books = relationship('Book', backref=backref('detail_invoice', lazy=True))
-    # invoices = relationship('Invoice', backref=backref('detail_invoice', lazy=True))
+    books = relationship('Book', backref=backref('detail_invoice', lazy=True))
+    invoices = relationship('Invoice', backref=backref('detail_invoice', lazy=True))
 
     def __str__(self):
         return "%s x %s" % (str(self.books), str(self.quantity))
@@ -244,7 +243,5 @@ class DetailInventoryReport(db.Model):
     report_id = Column(Integer, ForeignKey('inventory_report.id'), primary_key=True)
     book_id = Column(Integer, ForeignKey('book.id'), primary_key=True)
     quantity = Column(Integer, default=0)
-    # books = relationship('Book', backref=backref('detail_inventory_report', lazy=True))
-
-# if __name__ == '__main__':
-#     db.create_all(app=create_app('app.cfg'))
+    books = relationship('Book', backref=backref('detail_inventory_report', lazy=True))
+    inventory_reports = relationship('InventoryReport', backref=backref('detail_inventory_report', lazy=True))

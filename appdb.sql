@@ -54,7 +54,9 @@ CREATE TABLE `book` (
   `description` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `price` float DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,7 +66,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (1,'Sự Im Lặng Của Bầy Cừu',NULL,'Bìa mềm','assets/img/book_img/img6.jpg',115000),(2,'Án Mạng Mười Một Chữ',NULL,'Bìa mềm','assets/img/book_img/img8.jpg',110000),(3,'Rừng Nauy (Tái Bản 2018)',NULL,'Bìa mềm','assets/img/book_img/img1.jpg',128000),(4,'Naruto Tập 43',NULL,'Bìa mềm','assets/img/book_img/img12.jpg',22000),(5,'Hai Số Phận',NULL,'Bìa Cứng','assets/img/book_img/img4.jpg',175000),(6,'Sherlock Holmes (Trọn Bộ 3 Cuốn)',NULL,'Bìa mềm','assets/img/book_img/img7.jpg',345000),(7,'Án Mạng Trên Chuyến Tàu Tốc Hành Phương Đông',NULL,'Bìa mềm','assets/img/book_img/img2.jpg',110000),(8,'Tôi Thấy Hoa Vàng Trên Cỏ Xanh',NULL,'Bìa mềm','assets/img/book_img/img5.jpg',125000),(9,'Mắt Biếc',NULL,'Bìa mềm','assets/img/book_img/img11.jpg',110000),(10,'Ở Một Góc Nhân Gian',NULL,'Bìa mềm','assets/img/book_img/img13.jpg',80000),(11,'Toán 2',NULL,'Bìa mềm','assets/img/book_img/img9.jpg',13000),(12,'Sách Giáo Khoa Bộ Lớp 9 (Bộ 12 Cuốn)',NULL,'Bìa mềm','assets/img/book_img/img10.jpg',136000),(13,'Thám Tử Lừng Danh Conan - Tập 97',NULL,'Bìa mềm','assets/img/book_img/img3.jpg',20000);
+INSERT INTO `book` VALUES (1,'Sự Im Lặng Của Bầy Cừu',NULL,'Bìa mềm','assets/img/book_img/img6.jpg',115000,50),(2,'Án Mạng Mười Một Chữ',NULL,'Bìa mềm','assets/img/book_img/img8.jpg',110000,0),(3,'Rừng Nauy (Tái Bản 2018)',NULL,'Bìa mềm','assets/img/book_img/img1.jpg',128000,100),(4,'Naruto Tập 43',NULL,'Bìa mềm','assets/img/book_img/img12.jpg',22000,0),(5,'Hai Số Phận',NULL,'Bìa Cứng','assets/img/book_img/img4.jpg',175000,0),(6,'Sherlock Holmes (Trọn Bộ 3 Cuốn)',NULL,'Bìa mềm','assets/img/book_img/img7.jpg',345000,0),(7,'Án Mạng Trên Chuyến Tàu Tốc Hành Phương Đông',NULL,'Bìa mềm','assets/img/book_img/img2.jpg',110000,0),(8,'Tôi Thấy Hoa Vàng Trên Cỏ Xanh',NULL,'Bìa mềm','assets/img/book_img/img5.jpg',125000,0),(9,'Mắt Biếc',NULL,'Bìa mềm','assets/img/book_img/img11.jpg',110000,0),(10,'Ở Một Góc Nhân Gian',NULL,'Bìa mềm','assets/img/book_img/img13.jpg',80000,0),(11,'Toán 2',NULL,'Bìa mềm','assets/img/book_img/img9.jpg',13000,0),(12,'Sách Giáo Khoa Bộ Lớp 9 (Bộ 12 Cuốn)',NULL,'Bìa mềm','assets/img/book_img/img10.jpg',136000,0),(13,'Thám Tử Lừng Danh Conan - Tập 97',NULL,'Bìa mềm','assets/img/book_img/img3.jpg',20000,0);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,15 +184,15 @@ DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `username` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `password` varchar(100) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `password` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `phone` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `email` varchar(50) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `username_2` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -199,6 +201,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (1,'TranVan A',NULL,NULL,'371 Nguyen Kiem','0977477916','ban@gmail.com'),(3,'TranVan C',NULL,NULL,'37 Quang Trung','0838855548','hrhsrhrs@gmail.com'),(4,'Nguyen Van B',NULL,NULL,'24 fuoaauf','0457492147','fdsnbj@gmail.com'),(5,'Tran Van A',NULL,NULL,'37 Vo Van Tan','0977477916','ban@gmail.com'),(6,'Phan Van Trung',NULL,NULL,'432 Nguyen Van Cong','0123456789','trung123@gmail.com'),(10,'Tran Van A',NULL,NULL,'371 Nguyen Kiem','0977477916','ban@gmail.com');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,9 +215,7 @@ DROP TABLE IF EXISTS `detail_inventory_report`;
 CREATE TABLE `detail_inventory_report` (
   `report_id` int NOT NULL,
   `book_id` int NOT NULL,
-  `quantity_before` int DEFAULT NULL,
-  `quantity_after` int DEFAULT NULL,
-  `arise` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
   PRIMARY KEY (`report_id`,`book_id`),
   KEY `book_id` (`book_id`),
   CONSTRAINT `detail_inventory_report_ibfk_1` FOREIGN KEY (`report_id`) REFERENCES `inventory_report` (`id`),
@@ -228,6 +229,7 @@ CREATE TABLE `detail_inventory_report` (
 
 LOCK TABLES `detail_inventory_report` WRITE;
 /*!40000 ALTER TABLE `detail_inventory_report` DISABLE KEYS */;
+INSERT INTO `detail_inventory_report` VALUES (1,1,50),(2,1,50);
 /*!40000 ALTER TABLE `detail_inventory_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,6 +258,7 @@ CREATE TABLE `detail_invoice` (
 
 LOCK TABLES `detail_invoice` WRITE;
 /*!40000 ALTER TABLE `detail_invoice` DISABLE KEYS */;
+INSERT INTO `detail_invoice` VALUES (1,2,1,110000),(2,2,1,110000),(2,3,1,128000),(2,4,1,22000),(6,3,13,128000),(7,1,5,115000),(8,5,1,175000),(9,4,1,22000),(10,1,1,115000),(11,2,1,110000),(12,11,1,13000),(13,2,1,110000);
 /*!40000 ALTER TABLE `detail_invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +273,7 @@ CREATE TABLE `inventory_report` (
   `id` int NOT NULL AUTO_INCREMENT,
   `report_date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,6 +282,7 @@ CREATE TABLE `inventory_report` (
 
 LOCK TABLES `inventory_report` WRITE;
 /*!40000 ALTER TABLE `inventory_report` DISABLE KEYS */;
+INSERT INTO `inventory_report` VALUES (1,'2021-04-24'),(2,'2021-04-24'),(3,'2021-04-24');
 /*!40000 ALTER TABLE `inventory_report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,10 +298,11 @@ CREATE TABLE `invoice` (
   `date_of_invoice` date DEFAULT NULL,
   `total` float DEFAULT NULL,
   `customer_id` int DEFAULT NULL,
+  `note` longtext COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,6 +311,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` VALUES (1,'2021-04-23',110000,5,NULL),(2,'2021-04-23',260000,6,NULL),(6,'2021-04-23',1664000,10,''),(7,'2021-04-23',575000,10,''),(8,'2021-04-23',175000,10,''),(9,'2021-04-23',22000,10,''),(10,'2021-04-23',115000,10,''),(11,'2021-04-23',110000,10,''),(12,'2021-04-23',13000,10,''),(13,'2021-04-23',110000,10,'');
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -328,7 +334,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `username_2` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,4 +356,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-14 10:40:15
+-- Dump completed on 2021-04-24 13:54:58

@@ -70,3 +70,48 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['message'] == "Thêm giỏ hàng thành công")
             self.assertTrue(data['total_amount'] == 225000)
             self.assertTrue(data['total_quantity'] == 2)
+
+    def test_remove_product_from_cart(self):
+        data1 = json.dumps({
+            'id': str(1),
+            'name': 'Sự Im Lặng Của Bầy Cừu',
+            'image': 'assets/img/book_img/img6.jpg',
+            'price': 115000
+        })
+        with self.client:
+            self.client.post("/api/cart", data=data1, content_type="application/json")
+            response = self.client.post("/api/cart", data=data1, content_type="application/json")
+
+            data = json.loads(response.get_data(as_text=True))
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(data['total_quantity'] == 2)
+
+            response = self.client.post('/api/remove-item-cart', data=data1, content_type="application/json")
+
+            data = json.loads(response.get_data(as_text=True))
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(data['message'] == "Cập nhật giỏ hàng thành công")
+            self.assertTrue(data['total_quantity'] == 1)
+
+    def test_delete_item_from_cart(self):
+        data1 = json.dumps({
+            'id': str(1),
+            'name': 'Sự Im Lặng Của Bầy Cừu',
+            'image': 'assets/img/book_img/img6.jpg',
+            'price': 115000
+        })
+        with self.client:
+            self.client.post("/api/cart", data=data1, content_type="application/json")
+            response = self.client.post("/api/cart", data=data1, content_type="application/json")
+
+            data = json.loads(response.get_data(as_text=True))
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(data['total_quantity'] == 2)
+
+            response = self.client.delete('/api/cart/1', data=data1, content_type="application/json")
+
+            data = json.loads(response.get_data(as_text=True))
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(data['message'] == "Xóa thành công")
+            self.assertTrue(data['total_quantity'] == 0)
+            self.assertTrue(data['total_amount'] == 0)

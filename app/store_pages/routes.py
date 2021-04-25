@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, session, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
-from app import create_app, db, login_manager, models, get_data, utils
+from flask_admin import BaseView
+from app import create_app, db, login_manager, models, get_data, utils, admin, admin_view
 from app.models import *
 from . import store_pages_blueprint
+from .forms import CustomerForm
 
 import os, os.path
 
@@ -93,7 +95,10 @@ def shop_filter():
     books = get_data.filter_book(cate_id=cate_id, author_id=author_id, min_price=min_price, max_price=max_price, kw=kw)
 
     if len(books) == 0:
-        flash('Không có kết quả nào về {}'.format(kw))
+        if kw:
+            flash('Không có kết quả nào về {}'.format(kw))
+        else:
+            flash('Không có kết quả nào')
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {
@@ -108,6 +113,52 @@ def shop_filter():
                            categories=categories,
                            author_list=author_list,
                            cart_info=cart_info)
+
+
+# Trang giỏ hàng
+@store_pages_blueprint.route("/shop-cart")
+def shop_cart():
+    categories = get_data.get_category()
+
+    quan, price = utils.cart_stats(session.get('cart'))
+    cart_info = {
+        'total_quantity': quan,
+        'total_amount': price
+    }
+    return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info)
+
+
+# Trang thanh toán
+@store_pages_blueprint.route("/checkout", methods=['get', 'post'])
+def checkout():
+    categories = get_data.get_category()
+
+    form = CustomerForm()
+
+    if request.method == 'POST':
+        new_customer = Customer(name=form.first_name.data + ' ' + form.last_name.data,
+                                address=form.address.data,
+                                phone=form.phone.data,
+                                email=form.email.data)
+
+        if utils.add_customer(new_customer):
+            c = Customer.query.filter_by(id=new_customer.id).first()
+        else:
+            c = get_data.get_customer(new_customer)
+
+        if utils.add_invoice(session.get('cart'), c.id, form.order_comments.data):
+            del session['cart']
+
+            flash("Đặt hàng thành công")
+            return redirect(url_for('store_pages.index'))
+
+    quan, price = utils.cart_stats(session.get('cart'))
+    cart_info = {
+        'total_quantity': quan,
+        'total_amount': price
+    }
+
+    return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info, form=form)
 
 
 # Thêm sản phẩm vào giỏ hàng
@@ -151,12 +202,11 @@ def add_to_cart():
 
 
 # Bớt một sản phẩm khỏi giỏ hàng
+# Bớt sản phẩm khỏi giỏ hàng
 @store_pages_blueprint.route('/api/remove-item-cart', methods=['post'])
 def remove_from_cart():
     data = request.json
     book_id = str(data.get('id'))
-    book_name = data.get('name')
-    image = data.get('image')
     price = data.get('price')
 
     cart = session['cart']
@@ -165,15 +215,6 @@ def remove_from_cart():
         cart[book_id]['quantity'] = int(quan) - 1
         subp = cart[book_id]['subTotal']
         cart[book_id]['subTotal'] = float(subp) - price
-    else:  # chua co san pham trong gio
-        cart[book_id] = {
-            "id": book_id,
-            "name": book_name,
-            "image": image,
-            "price": price,
-            "quantity": 1,
-            "subTotal": price
-        }
 
     session['cart'] = cart
 
@@ -181,6 +222,33 @@ def remove_from_cart():
 
     return jsonify({
         "message": "Cập nhật giỏ hàng thành công",
+        'total_amount': total_amount,
+        'total_quantity': total_quan
+    })
+
+
+@store_pages_blueprint.route('/api/add_remove_cart', methods=['post'])
+def add_or_remove_items_from_cart():
+    if 'cart' not in session:
+        session['cart'] = {}
+
+    data = request.json
+    book_id = str(data.get('id'))
+    price = data.get('price')
+    quantity = data.get('quantity')
+
+    cart = session['cart']
+
+    if book_id in cart:  # co san pham trong gio
+        cart[book_id]['quantity'] = int(quantity)
+        cart[book_id]['subTotal'] = int(quantity) * price
+
+    session['cart'] = cart
+
+    total_quan, total_amount = utils.cart_stats(session['cart'])
+
+    return jsonify({
+        'message': "Cập nhật giỏ hàng thành công",
         'total_amount': total_amount,
         'total_quantity': total_quan
     })
@@ -208,46 +276,40 @@ def delete_item(b_id):
 
     total_quan, total_amount = utils.cart_stats(session['cart'])
     return jsonify({
-        "message": "Xoa thanh cong",
+        "message": "Xóa thành công",
         "data": {"book_id": b_id},
         'total_amount': total_amount,
         'total_quantity': total_quan
     })
 
-
-# Trang giỏ hàng
-@store_pages_blueprint.route("/shop-cart")
-def shop_cart():
-    categories = get_data.get_category()
-
-    quan, price = utils.cart_stats(session.get('cart'))
-    cart_info = {
-        'total_quantity': quan,
-        'total_amount': price
-    }
-    return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info)
+class MyView(BaseView):
+    def __init__(self, *args, **kwargs):
+        self._default_view = True
+        super(MyView, self).__init__(*args, **kwargs)
+        self.admin = admin
 
 
-# Trang thanh toán
-@store_pages_blueprint.route("/checkout", methods=['get', 'post'])
-def checkout():
-    categories = get_data.get_category()
+@store_pages_blueprint.route('/report', methods=['POST', 'GET'])
+def report():
+    data = []
+    reports = get_data.get_data_report()
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            year = request.form.get("year")
+            for i in range(1, 13):
+                data.append(utils.report_revenue(i, year=year))
+            m = int(max(data))
+            a = list(str(m))
+            for i in range(0, len(a)):
+                if i == 0:
+                    a[i] = str(int(a[i]) + 1)
+                else:
+                    a[i] = '0'
+            c = int(''.join(a))
+            return MyView().render('admin/thongke.html', data=data, c=c, reports=reports, year=year)
 
-    if request.method == 'POST':
-
-        if utils.add_invoice(session.get('cart')):
-            del session['cart']
-
-            return jsonify({"message": "Đặt hàng thành công"})
-
-    quan, price = utils.cart_stats(session.get('cart'))
-    cart_info = {
-        'total_quantity': quan,
-        'total_amount': price
-    }
-
-    return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info)
-
+        return MyView().render('admin/thongke.html', data=data, c=0, reports=reports)
+    return redirect('/admin')
 
 # trung
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}

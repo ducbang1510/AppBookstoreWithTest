@@ -90,6 +90,7 @@
                                                                                    step="1" min="1" max="100"
                                                                                    name="quantity"
                                                                                    id="quantity{{ b.id }}"
+                                                                                   oninput="updateCartByInput({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
                                                                                    value="{{ b.quantity }}" title="Qty">
                                                                             <a class="js-plus text-dark"
                                                                                href="javascript:;"
@@ -130,16 +131,6 @@
                                             {% endif %}
                                             <tr>
                                                 <td colspan="5" class="actions">
-                                                    <a href="{{ url_for('store_pages.shop_cart') }}"
-                                                       class="button btn btn-warning">Cập nhật giỏ hàng</a>
-                                                    <input type="hidden" id="_wpnonce" name="_wpnonce"
-                                                           value="db025d7a70"><input type="hidden"
-                                                                                     name="_wp_http_referer"
-                                                                                     value="storefront/cart/">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5" class="actions">
                                                     <a href="{{ url_for('store_pages.shop_list', page_num = 1) }}"
                                                        class="button btn btn-dark">Tiếp tục mua sắm</a>
                                                     <input type="hidden" id="_wpnonce" name="_wpnonce"
@@ -159,83 +150,6 @@
                 </div>
                 <div id="secondary" class="sidebar cart-collaterals order-1" role="complementary">
                     <div id="cartAccordion" class="border border-gray-900 bg-white mb-5">
-                        <div class="p-4d875 border">
-                            <div id="cartHeadingTwo" class="cart-head">
-                                <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                                   data-toggle="collapse" data-target="#cartCollapseTwo" aria-expanded="true"
-                                   aria-controls="cartCollapseTwo">
-                                    <h3 class="cart-title mb-0 font-weight-medium font-size-3">Hình thức vận chuyển</h3>
-                                    <svg class="mins" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                              d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z"/>
-                                    </svg>
-                                    <svg class="plus" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                              d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z"/>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div id="cartCollapseTwo" class="mt-4 cart-content collapse show"
-                                 aria-labelledby="cartHeadingTwo" data-parent="#cartAccordion">
-
-                                <ul id="shipping_method">
-                                    <li>
-                                        <input type="radio" name="shipping_method[0]" data-index="0"
-                                               id="shipping_method_0_flat_rate1" value="flat_rate:1"
-                                               class="shipping_method">
-                                        <label for="shipping_method_0_flat_rate1">Giao tiêu chuẩn: <span
-                                                class="woocommerce-Price-amount amount"><span
-                                                class="woocommerce-Price-currencySymbol"></span>15000 VND</span></label>
-                                    </li>
-                                    <li>
-                                        <input type="radio" name="shipping_method[0]" data-index="0"
-                                               id="shipping_method_0_flat_rate2" value="flat_rate:2"
-                                               class="shipping_method" checked="checked">
-                                        <label for="shipping_method_0_flat_rate2">Giao nhanh: <span
-                                                class="woocommerce-Price-amount amount"><span
-                                                class="woocommerce-Price-currencySymbol"></span>30000 VND</span></label>
-                                    </li>
-                                    <li>
-                                        <input type="radio" name="shipping_method[0]" data-index="0"
-                                               id="shipping_method_0_flat_rate3" value="flat_rate:2"
-                                               class="shipping_method" checked="checked">
-                                        <label for="shipping_method_0_flat_rate3">Lấy tại cửa hàng: <span
-                                                class="woocommerce-Price-amount amount"><span
-                                                class="woocommerce-Price-currencySymbol"></span>Miễn phí</span></label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="p-4d875 border">
-                            <div id="cartHeadingThree" class="cart-head">
-                                <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                                   data-toggle="collapse" data-target="#cartCollapseThree" aria-expanded="true"
-                                   aria-controls="cartCollapseThree">
-                                    <h3 class="cart-title mb-0 font-weight-medium font-size-3">Mã giảm giá</h3>
-                                    <svg class="mins" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                              d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z"/>
-                                    </svg>
-                                    <svg class="plus" xmlns="http://www.w3.org/2000/svg"
-                                         xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                              d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z"/>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div id="cartCollapseThree" class="mt-4 cart-content collapse show"
-                                 aria-labelledby="cartHeadingThree" data-parent="#cartAccordion">
-                                <div class="coupon">
-                                    <label for="coupon_code">Coupon:</label>
-                                    <input type="text" name="coupon_code" class="input-text" id="coupon_code" value=""
-                                           placeholder="Coupon code" autocomplete="off">
-                                    <input type="submit" class="button" name="apply_coupon" value="Dùng mã">
-                                </div>
-                            </div>
-                        </div>
                         <div class="p-4d875 border">
                             <table class="shop_table shop_table_responsive">
                                 <tbody>

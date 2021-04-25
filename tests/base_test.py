@@ -17,7 +17,7 @@ class BaseTestCase(TestCase):
         db.drop_all()
 
 
-#init_data for testing
+# init_data for testing
 def create_data():
     Book.create(name='Naruto Tập 43', quantity=0, description="Bìa mềm", image="assets/img/book_img/img12.jpg",
                 price=22000)
