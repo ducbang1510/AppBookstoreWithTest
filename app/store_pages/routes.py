@@ -4,6 +4,11 @@ from app import create_app, db, login_manager, models, get_data, utils
 from app.models import *
 from . import store_pages_blueprint
 
+import os, os.path
+
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
+
 
 @store_pages_blueprint.route('/')
 def index():
@@ -145,7 +150,7 @@ def add_to_cart():
     })
 
 
-#Bớt một sản phẩm khỏi giỏ hàng
+# Bớt một sản phẩm khỏi giỏ hàng
 @store_pages_blueprint.route('/api/remove-item-cart', methods=['post'])
 def remove_from_cart():
     data = request.json
@@ -181,7 +186,7 @@ def remove_from_cart():
     })
 
 
-#Xóa giỏ hàng
+# Xóa giỏ hàng
 @store_pages_blueprint.route("/api/cart/<int:b_id>", methods=["delete"])
 def delete_item(b_id):
     data = request.json
@@ -223,7 +228,7 @@ def shop_cart():
     return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info)
 
 
-#Trang thanh toán
+# Trang thanh toán
 @store_pages_blueprint.route("/checkout", methods=['get', 'post'])
 def checkout():
     categories = get_data.get_category()
@@ -242,3 +247,59 @@ def checkout():
     }
 
     return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info)
+
+
+# trung
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# Nhập sách
+@store_pages_blueprint.route('/admin/tempbookview', methods=['GET', 'POST'])
+def create_book():
+    # lấy dữ liệu từ form
+    if request.method == "POST":
+        name = request.form.get('name')
+        content = request.form.get('content')
+        description = request.form.get('description')
+        price = request.form.get('price')
+        quantity = request.form.get('quantity')
+        category = request.form.get('category')
+        author = request.form.get('author')
+        image = request.form.get('image')
+
+        print(author)
+        print(category)
+
+        # upload_and_save_picture_not_finish
+        # file_path = os.getcwd() + r'\app\static\assets\img\book_img'
+        # image = request.files['image']
+        #
+        # if image and allowed_file(image.filename):
+        #     file_name = secure_filename(image.filename)
+        #     image.save(os.path.join(file_path), file_name)
+
+    # Kiểm tra điều kiện
+    kq_check_exitst = get_data.check_book_is_exists(name)
+    kq_check_quantity = get_data.check_book_quantity(name)
+    kq_create = None
+    kq_update = None
+    kq = None
+
+    if not kq_check_exitst:
+        kq_create = get_data.create_book_with_quantity(name, content, description, image, price,
+                                                       quantity, author, category)
+    elif kq_check_quantity:
+        kq_update = get_data.update_book_with_quantity(name, quantity)
+    else:
+        kq = False
+
+    print(kq_create)
+    print(kq_update)
+    print(kq)
+
+    return redirect('/admin/tempbookview')

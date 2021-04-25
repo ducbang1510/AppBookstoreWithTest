@@ -49,11 +49,11 @@ def filter_book(cate_id=None, author_id=None, min_price=None, max_price=None, kw
         books = books.filter(Book.name.contains(kw))
 
     if cate_id:
-        books = books.join(BookCate, Book.id == BookCate.book_id)\
+        books = books.join(BookCate, Book.id == BookCate.book_id) \
             .filter(BookCate.category_id == cate_id)
 
     if author_id:
-        books = books.join(BookAuthor, Book.id == BookAuthor.book_id)\
+        books = books.join(BookAuthor, Book.id == BookAuthor.book_id) \
             .filter(BookAuthor.author_id == author_id)
 
     if min_price and max_price:
@@ -71,6 +71,109 @@ def get_data_report():
                             DetailInventoryReport.quantity_before.label('quantity_before'),
                             DetailInventoryReport.quantity_after.label('quantity_after'),
                             InventoryReport.report_date.label('report_date')) \
-                .join(Book, Book.id == DetailInventoryReport.book_id) \
-                .join(InventoryReport, DetailInventoryReport.report_id == InventoryReport.id)
+        .join(Book, Book.id == DetailInventoryReport.book_id) \
+        .join(InventoryReport, DetailInventoryReport.report_id == InventoryReport.id)
     return data.all()
+
+
+# Trung
+# check a book is exists in database?
+def check_book_is_exists(book_name=None):
+    name_book_db = ''
+    books = None
+    if book_name is not None:
+        books = Book.query.filter(Book.name.contains(book_name)).first()
+        if books is not None:
+            name_book_db = books.name
+
+    if book_name == name_book_db:
+        return True
+    else:
+        return False
+
+
+# check quantity
+def check_book_quantity(book_name=None):
+    quantity_db = None
+    books = None
+    if book_name is not None:
+        books = Book.query.filter(Book.name.contains(book_name)).first()
+        if books is not None:
+            quantity_db = books.quantity
+
+    if quantity_db is not None:
+        if quantity_db < 300:
+            return True
+    else:
+        return False
+
+
+def get_author_id(author_name=None):
+    author = Author.query.filter(Author.name.contains(author_name)).first()
+
+    return author.id
+
+
+def get_category_id(category_name=None):
+    category = Category.query.filter(Category.name.contains(category_name)).first()
+
+    return category.id
+
+
+def get_book_id(book_name=None):
+    book = Book.query.filter(Book.name.contains(book_name)).first()
+
+    return book.id
+
+
+def create_book_with_quantity(name=None, content=None, description=None, image=None, price=None,
+                              quantity=None, author=None, category=None):
+    book = Book(name=name, content=content, description=description, image=image,
+                price=price, quantity=quantity)
+
+    category_id = get_category_id(category_name=category)
+    author_id = get_author_id(author_name=author)
+
+    try:
+        db.session.add(book)
+        db.session.commit()
+
+        book_id = get_book_id(book_name=name)
+        book_cate = BookCate(book_id=book_id, category_id=category_id)
+        book_author = BookAuthor(book_id=book_id, author_id=author_id)
+
+        db.session.add(book_cate)
+        db.session.add(book_author)
+
+        db.session.commit()
+        return True
+
+    except Exception as ex:
+        print(ex)
+        return False
+
+
+def update_book_with_quantity(book_name=None, quantity=None):
+    b = Book.query.filter(Book.name.contains(book_name)).first()
+    b.quantity += int(quantity)
+
+    try:
+        db.session.add(b)
+        db.session.commit()
+
+        return True
+    except Exception as ex:
+        print(ex)
+        return False
+
+
+def get_all_categories():
+    data = Category.query.filter().all()
+
+    return data
+
+
+def get_all_author():
+    data = Author.query.filter().all()
+
+    return data

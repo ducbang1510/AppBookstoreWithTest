@@ -4,7 +4,7 @@ from flask import redirect
 from flask_admin import BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user, logout_user
-
+from app import get_data
 
 class AuthenticatedView(ModelView):
     def is_accessible(self):
@@ -35,6 +35,16 @@ class LogOutView(BaseView):
         return current_user.is_authenticated
 
 
+class TempBookView(BaseView):
+    @expose('/')
+    def index(self):
+
+        categories = get_data.get_all_categories()
+        authors = get_data.get_all_author()
+
+        return self.render('customs/temp_book.html', categories=categories, authors=authors)
+
+
 admin.add_view(LogOutView(name="Đăng xuất"))
 admin.add_view(ContactView(name='Liên hệ'))
 
@@ -42,7 +52,10 @@ admin.add_view(MyModelView(User, db.session, name="User"))
 admin.add_view(MyModelView(Customer, db.session, name='Khách hàng'))
 admin.add_view(MyModelView(Author, db.session, name='Tác giả'))
 admin.add_view(MyModelView(Category, db.session, name='Thể loại'))
+
 admin.add_view(MyModelView(Book, db.session, name='Sách'))
+
+admin.add_view(TempBookView(name='Nhập Sách'))
 
 admin.add_view(MyModelView(Invoice, db.session, name='Hóa đơn'))
 admin.add_view(MyModelView(DetailInvoice, db.session, name='Chi tiết hóa đơn'))
