@@ -286,22 +286,28 @@
                                                 </div>
                                             </div>
                                             <div class="product__hover d-flex align-items-center">
-                                                <a href="javascript:;"
-                                                   onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
-                                                   class="text-uppercase text-dark h-dark font-weight-medium mr-auto"
-                                                   data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i
-                                                            class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
+                                                {% if b.quantity > 0 %}
+                                                    <a href="javascript:;"
+                                                       onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
+                                                       class="text-uppercase text-dark h-dark font-weight-medium mr-auto"
+                                                       data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                                        <span class="product__add-to-cart">ADD TO CART</span>
+                                                        <span class="product__add-to-cart-icon font-size-4"><i
+                                                                class="flaticon-icon-126515"></i></span>
+                                                    </a>
+                                                {% else %}
+                                                    <a>
+                                                        <h6>Tạm Hết Hàng</h6>
+                                                    </a>
+                                                {% endif %}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-switch"></i>#}
+{#                                                </a>#}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-heart"></i>#}
+{#                                                </a>#}
                                             </div>
                                         </div>
                                     </div>
@@ -357,6 +363,7 @@
                                                 </div>
                                             </div>
                                             <div class="product__hover d-flex align-items-center">
+                                                {% if b.quantity > 0 %}
                                                 <a href="javascript:;"
                                                    onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
                                                    class="text-uppercase text-dark h-dark font-weight-medium mr-auto"
@@ -365,14 +372,19 @@
                                                     <span class="product__add-to-cart-icon font-size-4"><i
                                                             class="flaticon-icon-126515"></i></span>
                                                 </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
+                                                {% else %}
+                                                    <a>
+                                                        <h6>Tạm Hết Hàng</h6>
+                                                    </a>
+                                                {% endif %}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-switch"></i>#}
+{#                                                </a>#}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-heart"></i>#}
+{#                                                </a>#}
                                             </div>
                                         </div>
                                     </div>
@@ -428,22 +440,28 @@
                                                 </div>
                                             </div>
                                             <div class="product__hover d-flex align-items-center">
-                                                <a href="javascript:;"
-                                                   onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
-                                                   class="text-uppercase text-dark h-dark font-weight-medium mr-auto"
-                                                   data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i
-                                                            class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                                   class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
+                                                {% if b.quantity > 0 %}
+                                                    <a href="javascript:;"
+                                                       onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
+                                                       class="text-uppercase text-dark h-dark font-weight-medium mr-auto"
+                                                       data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                                        <span class="product__add-to-cart">ADD TO CART</span>
+                                                        <span class="product__add-to-cart-icon font-size-4"><i
+                                                                class="flaticon-icon-126515"></i></span>
+                                                    </a>
+                                                {% else %}
+                                                    <a>
+                                                        <h6>Tạm Hết Hàng</h6>
+                                                    </a>
+                                                {% endif %}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="mr-1 h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-switch"></i>#}
+{#                                                </a>#}
+{#                                                <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"#}
+{#                                                   class="h-p-bg btn btn-outline-primary border-0">#}
+{#                                                    <i class="flaticon-heart"></i>#}
+{#                                                </a>#}
                                             </div>
                                         </div>
                                     </div>
@@ -591,21 +609,19 @@
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
-                                        <a href="javascript:;"
-                                           onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
-                                           class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i
-                                                    class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                           class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ url_for('store_pages.book_detail', book_id = b.id) }}"
-                                           class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
+                                        {% if b.quantity > 0 %}
+                                            <a href="javascript:;"
+                                               onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
+                                               class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
+                                                <span class="product__add-to-cart">ADD TO CART</span>
+                                                <span class="product__add-to-cart-icon font-size-4"><i
+                                                        class="flaticon-icon-126515"></i></span>
+                                            </a>
+                                        {% else %}
+                                            <a>
+                                                <h6>Tạm Hết Hàng</h6>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

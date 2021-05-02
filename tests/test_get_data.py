@@ -67,3 +67,9 @@ class GetDataTests(BaseTestCase):
         results = get_data.get_author_of_book(book_id=7)
 
         self.assertTrue(len(results) == 0)
+
+# Test get_author
+# Test get_book_by_id
+# Test get_image
+# Test get_customer
+# Test get_data_report

@@ -1,6 +1,6 @@
 {% extends 'admin/master.html' %}
 
-{% if current_user.is_authenticated and current_user.user_role == ADMIN %}
+{% if current_user.is_authenticated and current_user.user_role != ADMIN %}
     {% block body %}
         <div class="row">
             <h1>Xin chào {{ current_user.username }}!</h1>
@@ -8,7 +8,7 @@
 {#                Customize the layout#}
             </p>
             <p>
-                Nếu chưa đăng nhập, hãy đăng nhập để vào trang quản lý
+            <h3 class="text-danger">Hãy đăng nhập với tài khoản admin để sử dụng các chức năng quản lý</h3>
             </p>
             <a class="btn btn-primary" href="{{ url_for('users.login') }}"><i class="glyphicon glyphicon-chevron-left"></i> Đăng nhập</a>
         </div>

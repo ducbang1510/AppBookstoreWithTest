@@ -24,11 +24,9 @@ def add_invoice(cart, customer_id, note=None):
             for b in list(cart.values()):
                 total = total + float(b["subTotal"])
 
-            invoice = Invoice(customer_id=customer_id, total=total, note=note)
+            invoice = Invoice(total=total, customer_id=customer_id, note=note)
             db.session.add(invoice)
             db.session.commit()
-            # else:
-            #     invoice = Invoice(customer_id=1, total=total, paid=total)
 
             for b in list(cart.values()):
                 if b["quantity"] > 0:
@@ -36,6 +34,10 @@ def add_invoice(cart, customer_id, note=None):
                                            book_id=int(b["id"]),
                                            quantity=b["quantity"],
                                            price=float(b["price"]))
+
+                    book = get_data.get_book_by_id(int(b["id"]))
+                    book.set_quantity(int(b["quantity"]))
+
                     db.session.add(detail)
 
             db.session.commit()
@@ -55,7 +57,7 @@ def add_customer(customer):
         db.session.add(customer)
         db.session.commit()
 
-        return True
+    return True
 
 
 def report_revenue(month, year=None):
@@ -70,3 +72,47 @@ def report_revenue(month, year=None):
         tong = tong + i.total
 
     return tong
+
+
+def create_book_with_quantity(name=None, content=None, description=None, image=None, price=None,
+                              quantity=None, author=None, category=None):
+    book = Book(name=name, content=content, description=description, image=image,
+                price=price, quantity=quantity)
+
+    category_id = get_data.get_category_id(category_name=category)
+    author_id = get_data.get_author_id(author_name=author)
+
+    try:
+        db.session.add(book)
+        db.session.commit()
+
+        book_id = get_data.get_book_id(book_name=name)
+        book_cate = BookCate(book_id=book_id, category_id=category_id)
+        book_author = BookAuthor(book_id=book_id, author_id=author_id)
+
+        db.session.add(book_cate)
+        db.session.add(book_author)
+
+        db.session.commit()
+        return True
+
+    except Exception as ex:
+        print(ex)
+        return False
+
+
+def update_book_with_quantity(book_name, quantity):
+    b = Book.query.filter(Book.name.contains(book_name)).first()
+    if b.quantity <= 300:
+        b.quantity += int(quantity)
+    else:
+        pass
+
+    try:
+        db.session.add(b)
+        db.session.commit()
+
+        return True
+    except Exception as ex:
+        print(ex)
+        return False

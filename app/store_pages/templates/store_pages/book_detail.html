@@ -16,14 +16,15 @@
             <div class="d-md-flex justify-content-between align-items-center py-4">
                 <h1 class="page-title font-size-3 font-weight-medium m-0 text-lh-lg">Thông tin sách</h1>
                 <nav class="woocommerce-breadcrumb font-size-2">
-                    <a href="../home/index.html" class="h-primary">Trang chủ</a>
+                    <a href="{{ url_for('store_pages.index') }}" class="h-primary">Trang chủ</a>
                     <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>
-                    <a href="../shop/v4.html" class="h-primary">Tổng hợp sách</a>
+                    <a href="{{ url_for('store_pages.shop_list', page_num = 1) }}" class="h-primary">Tổng hợp sách</a>
                     <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>Thông tin sách
                 </nav>
             </div>
         </div>
     </div>
+    {% if book %}
     <div class="site-content" id="content">
         <div class="container">
             <div class="row  space-top-2">
@@ -58,16 +59,10 @@
                                                     <span class="fas fa-star"></span>
                                                 </span>
                                                 <span class="ml-3">(3,714)</span>
-                                                <span class="ml-3 font-weight-medium">By (author)</span>
+                                                <span class="ml-3 font-weight-medium">Tác giả</span>
                                                 {% for a in authors %}
                                                     <span class="ml-2 text-gray-600">{{ a.name }}</span>
                                                 {% endfor %}
-                                            </div>
-
-                                            <div class="woocommerce-product-details__short-description font-size-2 mb-4">
-                                                <p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                                    do eiusmod tempor aliqua. Ut enim ad minim veniam, quis nostrud
-                                                    exercitation ullamco laboris nisi ut Excepteur sint occaecat.</p>
                                             </div>
 
                                             <p class="price font-size-22 font-weight-medium mb-4">
@@ -75,22 +70,6 @@
                                                     <span class="woocommerce-Price-currencySymbol"></span>{{ book.price }}
                                                 </span> VND
                                             </p>
-
-                                            <div class="mb-4">
-                                                <label class="form-label font-size-2 font-weight-medium mb-3">Book
-                                                    Format</label>
-                                                <!-- Select -->
-                                                <select class="js-select selectpicker dropdown-select w-100 position-relative"
-                                                        data-style=" border px-4 py-2 rounded-0 height-5 outline-none shadow-none form-control font-size-2"
-                                                        data-show-subtext="true"
-                                                        data-dropdown-align-right="true">
-                                                    <option value="one" data-subtext="$9.59" selected>Hardcover</option>
-                                                    <option value="two" data-subtext="$9.59">Softcover</option>
-                                                    <option value="three" data-subtext="$10.00">Kindal</option>
-                                                </select>
-                                                <!-- End Select -->
-                                            </div>
-
                                             <form class="cart d-md-flex align-items-center" method="post" action="#"
                                                   enctype="multipart/form-data">
                                                 <div class="quantity mb-4 mb-md-0 d-flex align-items-center">
@@ -98,53 +77,46 @@
                                                     <div class="border px-3 width-120">
                                                         <div class="js-quantity">
                                                             <div class="d-flex align-items-center">
-                                                                <label class="screen-reader-text sr-only">Quantity</label>
-                                                                <a class="js-minus text-dark" href="javascript:;">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                         width="10px" height="1px">
-                                                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                                                              d="M-0.000,-0.000 L10.000,-0.000 L10.000,1.000 L-0.000,1.000 L-0.000,-0.000 Z"/>
-                                                                    </svg>
-                                                                </a>
-                                                                <input type="number"
-                                                                       class="input-text qty text js-result form-control text-center border-0"
-                                                                       step="1" min="1" max="100" name="quantity"
-                                                                       value="1" title="Qty">
-                                                                <a class="js-plus text-dark" href="javascript:;">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                                         width="10px" height="10px">
-                                                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)"
-                                                                              d="M10.000,5.000 L6.000,5.000 L6.000,10.000 L5.000,10.000 L5.000,5.000 L-0.000,5.000 L-0.000,4.000 L5.000,4.000 L5.000,-0.000 L6.000,-0.000 L6.000,4.000 L10.000,4.000 L10.000,5.000 Z"/>
-                                                                    </svg>
-                                                                </a>
+                                                                {% if book.quantity > 0 %}
+                                                                    <label class="screen-reader-text sr-only">Số lượng</label>
+                                                                    <a></a>
+                                                                    <input type="number"
+                                                                           class="input-text qty text js-result form-control text-center border-0"
+                                                                           step="1" min="1" max="{{ book.quantity }}"
+                                                                           name="quantity" id="quantity{{ book.id }}"
+                                                                           value="1" title="Qty">
+                                                                    <a></a>
+                                                                {% else %}
+                                                                    <label class="screen-reader-text sr-only">Số lượng</label>
+                                                                    <a></a>
+                                                                    <input type="number"
+                                                                           class="input-text qty text js-result form-control text-center border-0"
+                                                                           step="1" min="0" max="{{ book.quantity }}"
+                                                                           name="quantity" id="quantity{{ book.id }}"
+                                                                           value="0" title="Qty">
+                                                                    <a></a>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <!-- End Quantity -->
                                                 </div>
-
-                                                <button type="button" name="add-to-cart" value="7145"
-                                                        href="javascript:;"
-                                                        onclick="addToCart({{ book.id }}, '{{ book.name }}', '{{ book.image }}', {{ book.price }})"
-                                                        class="btn btn-dark border-0 rounded-0 p-3 btn-block ml-md-4 single_add_to_cart_button button alt">
-                                                    Add to cart
-                                                </button>
-
+                                                {% if book.quantity > 0 %}
+                                                    <button type="button" name="add-to-cart" value="7145"
+                                                            href="javascript:;"
+                                                            onclick="updateCartByInput({{ book.id }}, '{{ book.name }}', '{{ book.image }}', {{ book.price }})"
+                                                            class="btn btn-dark border-0 rounded-0 p-3 btn-block ml-md-4 single_add_to_cart_button button alt">
+                                                        Add To Cart
+                                                    </button>
+                                                {% else %}
+                                                    <button type="button" name="add-to-cart" value="7145"
+                                                            href="javascript:;"
+                                                            onclick="alertOutOfProduct()"
+                                                            class="btn btn-warning border-0 rounded-0 p-3 btn-block ml-md-4 single_add_to_cart_button button alt">
+                                                        Tạm Hết Hàng
+                                                    </button>
+                                                {% endif %}
                                             </form>
-                                        </div>
-                                        <div class="px-lg-4 px-xl-7 py-5 d-flex align-items-center">
-                                            <ul class="list-unstyled nav">
-                                                <li class="mr-6 mb-4 mb-md-0">
-                                                    <a href="#" class="h-primary"><i class="flaticon-heart mr-2"></i>
-                                                        Add to Wishlist</a>
-                                                </li>
-                                                <li class="mr-6">
-                                                    <a href="#" class="h-primary"><i class="flaticon-share mr-2"></i>
-                                                        Share</a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -171,16 +143,9 @@
                                     </li>
                                     <li class="flex-shrink-0 flex-lg-shrink-1 nav-item mb-3">
                                         <a class="py-1 d-inline-block nav-link font-weight-medium"
-                                           id="pills-three-example1-tab" data-toggle="pill" href="#pills-three-example1"
-                                           role="tab" aria-controls="pills-three-example1" aria-selected="false">
-                                            Videos
-                                        </a>
-                                    </li>
-                                    <li class="flex-shrink-0 flex-lg-shrink-1 nav-item mb-3">
-                                        <a class="py-1 d-inline-block nav-link font-weight-medium"
                                            id="pills-four-example1-tab" data-toggle="pill" href="#pills-four-example1"
                                            role="tab" aria-controls="pills-four-example1" aria-selected="false">
-                                            Reviews (0)
+                                            Đánh giá (44)
                                         </a>
                                     </li>
                                 </ul>
@@ -192,31 +157,7 @@
                                          id="pills-one-example1" role="tabpanel"
                                          aria-labelledby="pills-one-example1-tab">
                                         <!-- Mockup Block -->
-                                        <p class="mb-0">We aim to show you accurate product information. Manufacturers,
-                                            suppliers and others provide what you see here, and we have not verified it.
-                                            See our disclaimer</p>
-                                        <p class="mb-0">#1 New York Times Bestseller</p>
-                                        <p class="mb-0">A Reese Witherspoon x Hello Sunshine Book Club Pick</p>
-                                        <p class="mb-4">"I can't even express how much I love this book! I didn't want
-                                            this story to end!"--Reese Witherspoon</p>
-                                        <p class="mb-4">"Painfully beautiful."--The New York Times Book Review</p>
-                                        <p>"Perfect for fans of Barbara Kingsolver."--Bustle</p>
-                                        <p class="mb-4">For years, rumors of the "Marsh Girl" have haunted Barkley Cove,
-                                            a quiet town on the North Carolina coast. So in late 1969, when handsome
-                                            Chase Andrews is found dead, the locals immediately suspect Kya Clark, the
-                                            so-called Marsh Girl. But Kya is not what they say. Sensitive and
-                                            intelligent, she has survived for years alone in the marsh that she calls
-                                            home, finding friends in the gulls and lessons in the sand. Then the time
-                                            comes when she yearns to be touched and loved. When two young men from town
-                                            become intrigued by her wild beauty, Kya opens herself to a new life--until
-                                            the unthinkable happens.</p>
-                                        <p class="mb-4">Perfect for fans of Barbara Kingsolver and Karen Russell, Where
-                                            the Crawdads Sing is at once an exquisite ode to the natural world, a
-                                            heartbreaking coming-of-age story, and a surprising tale of possible murder.
-                                            Owens reminds us that we are forever shaped by the children we once were,
-                                            and that we are all subject to the beautiful and violent secrets that nature
-                                            keeps</p>
-                                        <p>WHERE THE CRAWDADS LP</p>
+                                        <p class="mb-0">{{ book.content }}</p>
                                         <!-- End Mockup Block -->
                                     </div>
                                     <div class="woocommerce-Tabs-panel panel entry-content wc-tab tab-pane fade border-left pl-4 pt-4 pl-lg-6 pt-lg-6 pl-xl-9 pt-xl-9"
@@ -227,32 +168,24 @@
                                             <table class="table table-hover table-borderless">
                                                 <tbody>
                                                 <tr>
-                                                    <th class="px-4 px-xl-5">Format:</th>
-                                                    <td class="">Paperback | 384 pages</td>
+                                                    <th class="px-4 px-xl-5">Định dạng:</th>
+                                                    <td class="">{{ book.description }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="px-4 px-xl-5">Dimensions</th>
+                                                    <th class="px-4 px-xl-5">Kích thước:</th>
                                                     <td>9126 x 194 x 28mm | 301g</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="px-4 px-xl-5">Publication date:</th>
-                                                    <td>20 Dec 2020</td>
+                                                    <th class="px-4 px-xl-5">Ngày phát hành:</th>
+                                                    <td>20/12/2020</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="px-4 px-xl-5">Publisher:</th>
+                                                    <th class="px-4 px-xl-5">Nhà phát hành:</th>
                                                     <td>Little, Brown Book Group</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="px-4 px-xl-5">Imprint:</th>
-                                                    <td>Corsair</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="px-4 px-xl-5">Publication City/Country:</th>
-                                                    <td>London, United Kingdom</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="px-4 px-xl-5">Language:</th>
-                                                    <td>English</td>
+                                                    <th class="px-4 px-xl-5">Ngôn ngữ:</th>
+                                                    <td>Tiếng Việt</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -263,13 +196,13 @@
                                          id="pills-four-example1" role="tabpanel"
                                          aria-labelledby="pills-four-example1-tab">
                                         <!-- Mockup Block -->
-                                        <h4 class="font-size-3">Customer Reviews </h4>
+                                        <h4 class="font-size-3">Đánh giá của khách hàng </h4>
                                         <div class="mb-8">
                                             <div class="mb-6">
                                                 <div class="d-flex  align-items-center mb-4">
                                                     <span class="font-size-15 font-weight-bold">4.6</span>
                                                     <div class="ml-3 h6 mb-0">
-                                                        <span class="font-weight-normal">3,714 reviews</span>
+                                                        <span class="font-weight-normal">3,714 đánh giá</span>
                                                         <div class="text-yellow-darker">
                                                             <small class="fas fa-star"></small>
                                                             <small class="fas fa-star"></small>
@@ -283,12 +216,12 @@
                                                 <div class="d-xl-flex">
                                                     <button type="button"
                                                             class="d-block btn btn-outline-dark rounded-0 px-5 mb-3 mb-xl-0">
-                                                        See all reviews
+                                                        Xem tất cả
                                                     </button>
-                                                    <button type="button"
-                                                            class="d-block btn btn-dark ml-xl-3 rounded-0 px-5">Write a
-                                                        review
-                                                    </button>
+{#                                                    <button type="button"#}
+{#                                                            class="d-block btn btn-dark ml-xl-3 rounded-0 px-5">Write a#}
+{#                                                        review#}
+{#                                                    </button>#}
                                                 </div>
                                             </div>
                                             <div class="">
@@ -298,7 +231,7 @@
                                                         <a class="row align-items-center mx-gutters-2 font-size-2"
                                                            href="javascript:;">
                                                             <div class="col-auto">
-                                                                <span class="text-dark">5 stars</span>
+                                                                <span class="text-dark">5 sao</span>
                                                             </div>
                                                             <div class="col px-0">
                                                                 <div class="progress bg-white-100" style="height: 7px;">
@@ -317,7 +250,7 @@
                                                         <a class="row align-items-center mx-gutters-2 font-size-2"
                                                            href="javascript:;">
                                                             <div class="col-auto">
-                                                                <span class="text-dark">4 stars</span>
+                                                                <span class="text-dark">4 sao</span>
                                                             </div>
                                                             <div class="col px-0">
                                                                 <div class="progress bg-white-100" style="height: 7px;">
@@ -336,7 +269,7 @@
                                                         <a class="row align-items-center mx-gutters-2 font-size-2"
                                                            href="javascript:;">
                                                             <div class="col-auto">
-                                                                <span class="text-dark">3 stars</span>
+                                                                <span class="text-dark">3 sao</span>
                                                             </div>
                                                             <div class="col px-0">
                                                                 <div class="progress bg-white-100" style="height: 7px;">
@@ -355,7 +288,7 @@
                                                         <a class="row align-items-center mx-gutters-2 font-size-2"
                                                            href="javascript:;">
                                                             <div class="col-auto">
-                                                                <span class="text-dark">2 stars</span>
+                                                                <span class="text-dark">2 sao</span>
                                                             </div>
                                                             <div class="col px-0">
                                                                 <div class="progress bg-white-100" style="height: 7px;">
@@ -374,7 +307,7 @@
                                                         <a class="row align-items-center mx-gutters-2 font-size-2"
                                                            href="javascript:;">
                                                             <div class="col-auto">
-                                                                <span class="text-dark">1 stars</span>
+                                                                <span class="text-dark">1 sao</span>
                                                             </div>
                                                             <div class="col px-0">
                                                                 <div class="progress bg-white-100" style="height: 7px;">
@@ -394,7 +327,7 @@
                                             </div>
                                         </div>
 
-                                        <h4 class="font-size-3 mb-8">1-5 of 44 reviews</h4>
+                                        <h4 class="font-size-3 mb-8">1-5 of 44 đánh giá</h4>
 
                                         <ul class="list-unstyled mb-8">
                                             <li class="mb-4 pb-5 border-bottom">
@@ -507,9 +440,9 @@
                                             </li>
                                         </ul>
 
-                                        <h4 class="font-size-3 mb-4">Write a Review</h4>
+                                        <h4 class="font-size-3 mb-4">Viết đánh giá</h4>
                                         <div class="d-flex align-items-center mb-6">
-                                            <h6 class="mb-0">Select a rating(required)</h6>
+                                            <h6 class="mb-0">Chọn xếp hạng (bắt buộc)</h6>
                                             <div class="text-yellow-darker ml-3 font-size-4">
                                                 <small class="far fa-star"></small>
                                                 <small class="far fa-star"></small>
@@ -519,26 +452,28 @@
                                             </div>
                                         </div>
                                         <div class="js-form-message form-group mb-4">
-                                            <label for="descriptionTextarea" class="form-label text-dark h6 mb-3">Details
-                                                please! Your review helps other shoppers.</label>
+                                            <label for="descriptionTextarea" class="form-label text-dark h6 mb-3">
+                                                Vui lòng đánh giá chi tiết! Đánh giá của bạn sẽ giúp ích cho những người mua sắm khác.
+                                            </label>
                                             <textarea class="form-control rounded-0 p-4" rows="7"
                                                       id="descriptionTextarea"
-                                                      placeholder="What did you like or dislike? What should other shoppers know before buying?"
-                                                      required data-msg="Please enter your message."
+                                                      placeholder="Bạn thích hay không thích điều gì? Những người mua hàng khác nên biết những gì trước khi mua?"
+                                                      required data-msg="Vui lòng nhập ô này."
                                                       data-error-class="u-has-error"
                                                       data-success-class="u-has-success"></textarea>
                                         </div>
                                         <div class="form-group mb-5">
-                                            <label for="inputCompanyName" class="form-label text-dark h6 mb-3">Add a
-                                                title</label>
+                                            <label for="inputCompanyName" class="form-label text-dark h6 mb-3">
+                                                Thêm tiêu đề
+                                            </label>
                                             <input type="text" class="form-control rounded-0 px-4" name="companyName"
-                                                   id="inputCompanyName" placeholder="3000 characters remaining"
+                                                   id="inputCompanyName" placeholder="Tối đa 3000 kí tự"
                                                    aria-label="3000 characters remaining">
                                         </div>
                                         <div class="d-flex">
                                             <button type="submit"
-                                                    class="btn btn-dark btn-wide rounded-0 transition-3d-hover">Submit
-                                                Review
+                                                    class="btn btn-dark btn-wide rounded-0 transition-3d-hover">
+                                                Đăng đánh giá
                                             </button>
                                         </div>
                                         <!-- End Mockup Block -->
@@ -720,21 +655,27 @@
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
+                                        {% if b.quantity > 0 %}
                                         <a href="javascript:;"
                                            onclick="addToCart({{ b.id }}, '{{ b.name }}', '{{ b.image }}', {{ b.price }})"
                                            class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
+                                            <span class="product__add-to-cart">Add To Cart</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i
                                                     class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="../shop/single-product-v7.html"
-                                           class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="../shop/single-product-v7.html"
-                                           class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
+                                        {% else %}
+                                            <a>
+                                                <h6>Tạm Hết Hàng</h6>
+                                            </a>
+                                        {% endif %}
+{#                                        <a href="../shop/single-product-v7.html"#}
+{#                                           class="mr-1 h-p-bg btn btn-outline-primary border-0">#}
+{#                                            <i class="flaticon-switch"></i>#}
+{#                                        </a>#}
+{#                                        <a href="../shop/single-product-v7.html"#}
+{#                                           class="h-p-bg btn btn-outline-primary border-0">#}
+{#                                            <i class="flaticon-heart"></i>#}
+{#                                        </a>#}
                                     </div>
                                 </div>
                             </div>
@@ -745,6 +686,7 @@
             </section>
         </div>
     </div>
+    {% endif %}
     <!-- ====== END MAIN CONTENT ====== -->
 
     {% block footer %}

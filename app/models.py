@@ -71,30 +71,20 @@ class Customer(db.Model, CRUDMixin):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(50), nullable=False)
-    username = Column(String(100), nullable=True, unique=True)
-    password = Column(String(100), nullable=True)
-    address = Column(String(255))
+    address = Column(String(255), nullable=True)
     phone = Column(String(20), nullable=True)
-    email = Column(String(50), nullable=True)
+    email = Column(String(50), nullable=False)
 
     # invoices = relationship('Invoice', backref='customer', lazy=True)
 
     def __init__(self, name, address=None, phone=None, email=None):
         self.name = name
-        # self.username = username
-        # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
         self.address = address
         self.phone = phone
         self.email = email
 
-    def is_correct_password(self, plaintext_password: str):
-        return bcrypt.check_password_hash(self.password, plaintext_password)
-
-    def set_password(self, plaintext_password):
-        self.password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
-
     def __repr__(self):
-        return f'<User: {self.username}>'
+        return f'<User: {self.name}>'
 
 
 # Bảng sách
@@ -121,6 +111,9 @@ class Book(db.Model, CRUDMixin):
         self.image = image
         self.price = price
         self.quantity = quantity
+
+    def set_quantity(self, sell_quantity):
+        self.quantity = self.quantity - sell_quantity
 
     def __str__(self):
         return "Tên sách: %s, số lượng: %s" % (str(self.name), str(self.quantity))
@@ -190,7 +183,7 @@ class BookAuthor(db.Model, CRUDMixin):
 
 
 # Bảng hóa đơn
-class Invoice(db.Model):
+class Invoice(db.Model, CRUDMixin):
     __tablename__ = 'invoice'
     __table_args__ = {'extend_existing': True}
 

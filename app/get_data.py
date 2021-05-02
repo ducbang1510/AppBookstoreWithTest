@@ -32,7 +32,8 @@ def get_image(cat, book_id=None):
 
 
 def get_book_with_details():
-    books = db.session.query(Book.id, Book.name, Book.description, Book.image, Book.price, Author.name.label('author'),
+    books = db.session.query(Book.id, Book.name, Book.description, Book.image, Book.price, Book.quantity,
+                             Author.name.label('author'),
                              Category.name.label('cate')) \
         .join(BookAuthor, BookAuthor.book_id == Book.id) \
         .join(Author, Author.id == BookAuthor.author_id) \
@@ -82,3 +83,55 @@ def get_data_report():
                 .join(Book, Book.id == DetailInventoryReport.book_id) \
                 .join(InventoryReport, DetailInventoryReport.report_id == InventoryReport.id)
     return data.all()
+
+
+# check a book is exists in database?
+def check_book_is_exists(book_name=None):
+    name_book_db = ''
+    if book_name is not None:
+        books = Book.query.filter(Book.name.contains(book_name)).first()
+        if books is not None:
+            name_book_db = books.name
+
+    if book_name == name_book_db:
+        return True
+    else:
+        return False
+
+
+# check quantity
+def check_book_quantity(book_name=None):
+    quantity_db = None
+    if book_name is not None:
+        books = Book.query.filter(Book.name.contains(book_name)).first()
+        if books is not None:
+            quantity_db = books.quantity
+
+    if quantity_db is not None:
+        if quantity_db < 300:
+            return True
+    else:
+        return False
+
+
+def get_author_id(author_name):
+    author = Author.query.filter(Author.name.contains(author_name)).first()
+
+    return author.id
+
+
+def get_category_id(category_name):
+    category = Category.query.filter(Category.name.contains(category_name)).first()
+
+    return category.id
+
+
+def get_book_id(book_name):
+    book = Book.query.filter(Book.name.contains(book_name)).first()
+
+    return book.id
+
+
+def get_row_of_books_db():
+    row = Book.query.count()
+    return row

@@ -5,15 +5,18 @@ from app import create_app, db, login_manager, models, get_data, utils, admin, a
 from app.models import *
 from . import store_pages_blueprint
 from .forms import CustomerForm
+from app.users.forms import LoginForm, RegisterForm
 
 
-@store_pages_blueprint.route('/')
+@store_pages_blueprint.route('/', methods=['GET', 'POST'])
 def index():
     categories = get_data.get_category()
     books = get_data.filter_book()
     booklm = get_data.filter_book(10)
     book_list = get_data.get_book_with_details()
     authors = get_data.get_authors(8)
+    form = LoginForm()
+    form1 = RegisterForm()
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {
@@ -26,7 +29,8 @@ def index():
                            booklm=booklm,
                            book_list=book_list,
                            authors=authors,
-                           cart_info=cart_info)
+                           cart_info=cart_info,
+                           form1=form1, form=form)
 
 
 # Thông tin sách
@@ -39,6 +43,8 @@ def book_detail(book_id):
     authors = get_data.get_author_of_book(book_id)
     images = get_data.get_image('300x452', book_id=book_id)
     quan, price = utils.cart_stats(session.get('cart'))
+    form = LoginForm()
+    form1 = RegisterForm()
     cart_info = {
         'total_quantity': quan,
         'total_amount': price
@@ -49,7 +55,8 @@ def book_detail(book_id):
                            books=books,
                            book_list=book_list,
                            categories=categories,
-                           authors=authors, images=images, cart_info=cart_info)
+                           authors=authors, images=images, cart_info=cart_info,
+                           form=form, form1=form1)
 
 
 # Tất cả sản phẩm
@@ -62,6 +69,8 @@ def shop_list(page_num):
     book_pagi = Book.query.paginate(per_page=12, page=page_num, error_out=True)
     all_pages = book_pagi.iter_pages()
     quan, price = utils.cart_stats(session.get('cart'))
+    form = LoginForm()
+    form1 = RegisterForm()
     cart_info = {
         'total_quantity': quan,
         'total_amount': price
@@ -72,7 +81,8 @@ def shop_list(page_num):
                            author_list=author_list,
                            cart_info=cart_info,
                            page_num=page_num,
-                           all_pages=all_pages)
+                           all_pages=all_pages,
+                           form1=form1, form=form)
 
 
 # Lọc theo thể loại và tác giả
@@ -88,6 +98,8 @@ def shop_filter():
     cate_id = request.args.get("category_id")
     author_id = request.args.get("author_id")
     books = get_data.filter_book(cate_id=cate_id, author_id=author_id, min_price=min_price, max_price=max_price, kw=kw)
+    form = LoginForm()
+    form1 = RegisterForm()
 
     if len(books) == 0:
         if kw:
@@ -107,20 +119,24 @@ def shop_filter():
                            author_id=author_id,
                            categories=categories,
                            author_list=author_list,
-                           cart_info=cart_info)
+                           cart_info=cart_info,
+                           form=form, form1=form1)
 
 
 # Trang giỏ hàng
 @store_pages_blueprint.route("/shop-cart")
 def shop_cart():
     categories = get_data.get_category()
+    form = LoginForm()
+    form1 = RegisterForm()
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {
         'total_quantity': quan,
         'total_amount': price
     }
-    return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info)
+    return render_template('store_pages/shop_cart.html', categories=categories, cart_info=cart_info
+                           , form=form, form1=form1)
 
 
 # Trang thanh toán
@@ -128,24 +144,31 @@ def shop_cart():
 def checkout():
     categories = get_data.get_category()
 
-    form = CustomerForm()
+    form = LoginForm()
+    form1 = RegisterForm()
+    form2 = CustomerForm()
+    cart = session.get('cart')
 
     if request.method == 'POST':
-        new_customer = Customer(name=form.first_name.data + ' ' + form.last_name.data,
-                                address=form.address.data,
-                                phone=form.phone.data,
-                                email=form.email.data)
+        if cart:
+            new_customer = Customer(name=form2.first_name.data + ' ' + form2.last_name.data,
+                                    address=form2.address.data,
+                                    phone=form2.phone.data,
+                                    email=form2.email.data)
 
-        if utils.add_customer(new_customer):
-            c = Customer.query.filter_by(id=new_customer.id).first()
+            if utils.add_customer(new_customer):
+                c = Customer.query.filter_by(id=new_customer.id).first()
+            else:
+                c = get_data.get_customer(new_customer)
+
+            if utils.add_invoice(session.get('cart'), c.id, form2.order_comments.data):
+                del session['cart']
+
+                flash("Đặt hàng thành công")
+                return redirect(url_for('store_pages.index'))
         else:
-            c = get_data.get_customer(new_customer)
-
-        if utils.add_invoice(session.get('cart'), c.id, form.order_comments.data):
-            del session['cart']
-
-            flash("Đặt hàng thành công")
-            return redirect(url_for('store_pages.index'))
+            flash("Không có sản phẩm nào trong giỏ")
+            return redirect(url_for('store_pages.checkout'))
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {
@@ -153,7 +176,8 @@ def checkout():
         'total_amount': price
     }
 
-    return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info, form=form)
+    return render_template('store_pages/checkout.html', categories=categories, cart_info=cart_info,
+                           form=form, form1=form1, form2=form2)
 
 
 # Thêm sản phẩm vào giỏ hàng
@@ -228,6 +252,8 @@ def add_or_remove_items_from_cart():
 
     data = request.json
     book_id = str(data.get('id'))
+    book_name = data.get('name')
+    image = data.get('image')
     price = data.get('price')
     quantity = data.get('quantity')
 
@@ -236,6 +262,15 @@ def add_or_remove_items_from_cart():
     if book_id in cart:  # co san pham trong gio
         cart[book_id]['quantity'] = int(quantity)
         cart[book_id]['subTotal'] = int(quantity) * price
+    else:  # chua co san pham trong gio
+        cart[book_id] = {
+            "id": book_id,
+            "name": book_name,
+            "image": image,
+            "price": price,
+            "quantity": int(quantity),
+            "subTotal": price
+        }
 
     session['cart'] = cart
 
@@ -288,7 +323,7 @@ class MyView(BaseView):
 def report():
     data = []
     reports = get_data.get_data_report()
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user.user_role == UserRole.ADMIN:
         if request.method == 'POST':
             year = request.form.get("year")
             for i in range(1, 13):
@@ -304,4 +339,61 @@ def report():
             return MyView().render('admin/thongke.html', data=data, c=c, reports=reports, year=year)
 
         return MyView().render('admin/thongke.html', data=data, c=0, reports=reports)
-    return redirect('/admin')
+    else:
+        flash('Hãy đăng nhập với tài khoản quyền admin')
+        return redirect('/admin')
+
+
+# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+#
+#
+# def allowed_file(filename):
+#     return '.' in filename and \
+#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+# Nhập sách
+@store_pages_blueprint.route('/admin/tempbookview', methods=['GET', 'POST'])
+def create_book():
+    # lấy dữ liệu từ form
+    if request.method == "POST":
+        name = request.form.get('name')
+        content = request.form.get('content')
+        description = request.form.get('description')
+        price = request.form.get('price')
+        quantity = request.form.get('quantity')
+        category = request.form.get('category')
+        author = request.form.get('author')
+        image = request.form.get('image')
+
+        print(author)
+        print(category)
+
+        # upload_and_save_picture_not_finish
+        # file_path = os.getcwd() + r'\app\static\assets\img\book_img'
+        # image = request.files['image']
+        #
+        # if image and allowed_file(image.filename):
+        #     file_name = secure_filename(image.filename)
+        #     image.save(os.path.join(file_path), file_name)
+
+    # Kiểm tra điều kiện
+    kq_check_exitst = get_data.check_book_is_exists(name)
+    kq_check_quantity = get_data.check_book_quantity(name)
+    kq_create = None
+    kq_update = None
+    kq = None
+
+    if not kq_check_exitst:
+        kq_create = utils.create_book_with_quantity(name, content, description, image, price,
+                                                       quantity, author, category)
+    elif kq_check_quantity:
+        kq_update = utils.update_book_with_quantity(name, quantity)
+    else:
+        kq = False
+
+    print(kq_create)
+    print(kq_update)
+    print(kq)
+
+    return redirect('/admin/tempbookview')

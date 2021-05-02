@@ -10,13 +10,9 @@
                             class="glph-icon flaticon-phone mr-2"></i>(+84) 977477916</a></li>
                 </ul>
                 <ul class="topbar__nav--right nav mr-md-n3">
-                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i
-                            class="glph-icon flaticon-pin"></i></a></li>
-                    {#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
-                    {#                            class="glph-icon flaticon-switch"></i></a></li>#}
-                    {#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
-                    {#                            class="glph-icon flaticon-heart"></i></a></li>#}
-                    <li class="nav-item">
+{#                    <li class="nav-item"><a href="#" class="nav-link link-black-100"><i#}
+{#                            class="glph-icon flaticon-pin"></i></a></li>#}
+{#                    <li class="nav-item">#}
                         <!-- Account Sidebar Toggle Button -->
                         <a id="sidebarNavToggler" href="javascript:;" role="button" class="nav-link link-black-100"
                            aria-controls="sidebarContent"
@@ -340,24 +336,24 @@
 
                                     <div class="d-flex justify-content-between mb-5 align-items-center">
                                         <!-- Checkbox -->
-                                        <div class="js-form-message">
-                                            <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
-                                                <input type="checkbox" class="custom-control-input" id="termsCheckbox1"
-                                                       name="termsCheckbox1" required>
-                                                <label class="custom-control-label" for="termsCheckbox1">
-                                                    <span class="font-size-2 text-secondary-gray-700">
-                                                        Nhớ mật khẩu
-                                                    </span>
-                                                </label>
-                                            </div>
-                                        </div>
+{#                                        <div class="js-form-message">#}
+{#                                            <div class="custom-control custom-checkbox d-flex align-items-center text-muted">#}
+{#                                                <input type="checkbox" class="custom-control-input" id="termsCheckbox1"#}
+{#                                                       name="termsCheckbox1" required>#}
+{#                                                <label class="custom-control-label" for="termsCheckbox1">#}
+{#                                                    <span class="font-size-2 text-secondary-gray-700">#}
+{#                                                        Nhớ mật khẩu#}
+{#                                                    </span>#}
+{#                                                </label>#}
+{#                                            </div>#}
+{#                                        </div>#}
                                         <!-- End Checkbox -->
 
-                                        <a class="js-animation-link text-dark font-size-2 t-d-u link-muted font-weight-medium"
-                                           href="javascript:;"
-                                           data-target="#forgotPassword1"
-                                           data-link-group="idForm1"
-                                           data-animation-in="fadeIn">Quên mật khẩu?</a>
+{#                                        <a class="js-animation-link text-dark font-size-2 t-d-u link-muted font-weight-medium"#}
+{#                                           href="javascript:;"#}
+{#                                           data-target="#forgotPassword1"#}
+{#                                           data-link-group="idForm1"#}
+{#                                           data-animation-in="fadeIn">Quên mật khẩu?</a>#}
                                     </div>
 
                                     <div class="mb-4d75">
@@ -530,17 +526,15 @@
                             </header>
                             <!-- End Title -->
                             <form method="post" action="{{ url_for('users.login') }}">
+                                {{ form.hidden_tag() }}
+                                {{ form.csrf_token }}
                                 <div class="p-4 p-md-6">
                                     <!-- Form Group -->
                                     <div class="form-group mb-4">
                                         <div class="js-form-message js-focus-state">
-                                            <label id="signinEmailLabel" class="form-label" for="signinEmail">Username
+                                            <label id="signinUsernameLabel" class="form-label" for="username">Username
                                                 *</label>
-                                            <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                   name="username" id="signinEmail"
-                                                   placeholder=""
-                                                   aria-label="creativelayers088@gmail.com"
-                                                   aria-describedby="signinEmailLabel" required>
+                                            {{ form.username(class="form-control rounded-0 height-4 px-4", placeholder="Username") }}
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -548,37 +542,16 @@
                                     <!-- Form Group -->
                                     <div class="form-group mb-4">
                                         <div class="js-form-message js-focus-state">
-                                            <label id="signinPasswordLabel" class="form-label" for="signinPassword">Mật
+                                            <label id="signinPasswordLabel" class="form-label" for="password">Mật
                                                 khẩu
                                                 *</label>
-                                            <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                   name="password" id="signinPassword" placeholder="" aria-label=""
-                                                   aria-describedby="signinPasswordLabel" required>
+                                            {{ form.password(class="form-control rounded-0 height-4 px-4", placeholder="Password") }}
                                         </div>
                                     </div>
 
                                     <!-- End Form Group -->
 
                                     <div class="d-flex justify-content-between mb-5 align-items-center">
-                                        <!-- Checkbox -->
-                                        <div class="js-form-message">
-                                            <div class="custom-control custom-checkbox d-flex align-items-center text-muted">
-                                                <input type="checkbox" class="custom-control-input" id="termsCheckbox"
-                                                       name="termsCheckbox">
-                                                <label class="custom-control-label" for="termsCheckbox">
-                                                        <span class="font-size-2 text-secondary-gray-700">
-                                                            Nhớ mật khẩu
-                                                        </span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- End Checkbox -->
-
-                                        <a class="js-animation-link text-dark font-size-2 t-d-u link-muted font-weight-medium"
-                                           href="javascript:;"
-                                           data-target="#forgotPassword"
-                                           data-link-group="idForm"
-                                           data-animation-in="fadeIn">Quên mật khẩu?</a>
                                     </div>
 
                                     <div class="mb-4d75">
@@ -607,17 +580,15 @@
                             <!-- End Title -->
                             <form method="post" action="{{ url_for('users.register') }}" onsubmit="return validate()"
                                   enctype="multipart/form-data">
+                                {{ form1.hidden_tag() }}
+                                {{ form1.csrf_token }}
                                 <div class="p-4 p-md-6">
                                     <!-- Form Group -->
                                     <div class="form-group mb-4">
                                         <div class="js-form-message js-focus-state">
                                             <label id="nameLabel1" class="form-label" for="name_dk">Họ và tên
                                                 *</label>
-                                            <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                   name="name_dk" id="name_dk"
-                                                   placeholder=""
-                                                   aria-label="creativelayers088@gmail.com"
-                                                   aria-describedby="signinEmailLabel1" required>
+                                            {{ form1.name_dk(class="form-control rounded-0 height-4 px-4", placeholder="Name") }}
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -627,11 +598,7 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="emailLabel1" class="form-label" for="email_dk">Email
                                                 *</label>
-                                            <input type="email" class="form-control rounded-0 height-4 px-4"
-                                                   name="email_dk" id="email_dk"
-                                                   placeholder="creativelayers088@gmail.com"
-                                                   aria-label="creativelayers088@gmail.com"
-                                                   aria-describedby="signinEmailLabel1" required>
+                                            {{ form1.email_dk(class="form-control rounded-0 height-4 px-4", placeholder="creativelayers088@gmail.com") }}
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -641,11 +608,7 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="usernameLabel1" class="form-label" for="username_dk">Username
                                                 *</label>
-                                            <input type="text" class="form-control rounded-0 height-4 px-4"
-                                                   name="username_dk" id="username_dk"
-                                                   placeholder=""
-                                                   aria-label="creativelayers088@gmail.com"
-                                                   aria-describedby="signinEmailLabel1" required>
+                                            {{ form1.username_dk(class="form-control rounded-0 height-4 px-4", placeholder="Username") }}
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -655,9 +618,7 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="passwordLabel1" class="form-label" for="password_dk">Mật khẩu
                                                 *</label>
-                                            <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                   name="password_dk" id="password_dk" placeholder="" aria-label=""
-                                                   aria-describedby="signinPasswordLabel1" required>
+                                            {{ form1.password_dk(class="form-control rounded-0 height-4 px-4", placeholder="Password") }}
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -667,9 +628,7 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="confirmPasswordLabel" class="form-label"
                                                    for="password-repeat">Xác nhận mật khẩu *</label>
-                                            <input type="password" class="form-control rounded-0 height-4 px-4"
-                                                   name="password-repeat" id="password-repeat" placeholder=""
-                                                   aria-label="" aria-describedby="signupConfirmPasswordLabel" required>
+                                            {{ form1.confirm(class="form-control rounded-0 height-4 px-4", placeholder="Confirm Password") }}
                                         </div>
                                     </div>
                                     <!-- End Input -->
@@ -902,10 +861,6 @@
                         <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                             <h2 class="font-size-3 mb-3">TRỢ GIÚP VÀ CÀI ĐẶT </h2>
                             <ul class="list-group list-group-flush list-group-borderless">
-{#                                <li class="list-group-item px-0 py-2 border-0">#}
-{#                                    <a href="#" class="h-primary">Tài khoản của bạn</a>#}
-                                    {# {{ url_for('my_account') }} #}
-{#                                </li>#}
                                 <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Trợ
                                     giúp</a>
                                 </li>

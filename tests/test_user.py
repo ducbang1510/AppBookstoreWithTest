@@ -65,14 +65,14 @@ class UserViewsTests(BaseTestCase):
         create_data()
         with self.client:
             response = self.client.post("/register",
-                                        data=dict(name='Anh Khoa',
-                                                  email='Khoa123@gmail.com',
-                                                  username='khoa123',
-                                                  password='khoa123',
+                                        data=dict(name_dk='Anh Khoa',
+                                                  email_dk='Khoa123@gmail.com',
+                                                  username_dk='khoa123',
+                                                  password_dk='khoa123',
                                                   confirm='khoa123'),
                                         follow_redirects=True)
 
-            assert response.status_code == 200
+            self.assertTrue(response.status_code == 200)
             self.assertTrue(current_user.username == "khoa123")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)

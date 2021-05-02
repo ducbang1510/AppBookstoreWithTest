@@ -51,7 +51,7 @@ function updateCartByInput(bookId, bookName, image, price) {
         }
     }).then(res => res.json()).then(data => {
         console.info(data);
-        // alert(data.message);
+        alert(data.message);
         window.location.reload(true);
     })
 }
@@ -68,4 +68,8 @@ function pay() {
             alert(data.message);
             window.location.reload(true);
         })
+}
+
+function alertOutOfProduct() {
+    alert("Sản phẩm tạm hết hàng")
 }
