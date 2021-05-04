@@ -1,5 +1,6 @@
 from app.models import *
 from tests.base_test import BaseTestCase
+from datetime import datetime
 
 
 def new_user(name='Duc Bang', email='abc@gmail.com', username='admin123', password='123456'):
@@ -67,5 +68,26 @@ class ModelTests(BaseTestCase):
         self.assertTrue(author in db.session)
 
     # TEST Invoice
-# Test new inventory
-# Test new customer
+    def test_new_invoice(self):
+        Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147', email='hrhsrhrs@gmail.com')
+        invoice = Invoice(total=154000, customer_id=1)
+        db.session.add(invoice)
+        db.session.commit()
+
+        self.assertTrue(invoice in db.session)
+
+    # TEST Inventory
+    def test_new_inventory(self):
+        ivt = InventoryReport()
+        db.session.add(ivt)
+        db.session.commit()
+
+        self.assertTrue(ivt in db.session)
+        self.assertTrue(ivt.report_date == datetime.now().date())
+
+    # TEST Customer
+    def test_new_customer(self):
+        c = Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147', email='hrhsrhrs@gmail.com')
+
+        self.assertTrue(c in db.session)
+        self.assertTrue(c.__repr__() == '<Name: Tran Van A>')

@@ -155,6 +155,21 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(b'phone' in response.data)
             self.assertTrue(b'order_comments' in response.data)
 
+    def test_checkout_page_with_login(self):
+        create_data()
+        with self.client:
+            self.client.post("/login", data=dict(username='admin456', password='654321'),
+                             follow_redirects=True)
+
+            response = self.client.get('/checkout')
+
+            self.assertTrue(response.status_code == 200)
+            self.assertTrue(b'first_name' not in response.data)
+            self.assertTrue(b'last_name' not in response.data)
+            self.assertTrue(b'address' in response.data)
+            self.assertTrue(b'phone' in response.data)
+            self.assertTrue(b'order_comments' in response.data)
+
     # Test shop_list
     def test_shop_list_page_with_valid_page(self):
         create_data()

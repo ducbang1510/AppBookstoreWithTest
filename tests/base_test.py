@@ -71,7 +71,9 @@ def create_data():
     db.session.commit()
 
     divt = DetailInventoryReport(report_id=1, book_id=1, quantity=50)
+    divt2 = DetailInventoryReport(report_id=1, book_id=2, quantity=310)
     db.session.add(divt)
+    db.session.add(divt2)
     db.session.commit()
 
 
