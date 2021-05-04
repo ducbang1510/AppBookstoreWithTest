@@ -65,37 +65,52 @@
                                         <div class="px-4 pt-5 bg-white border">
                                             <div class="woocommerce-billing-fields">
                                                 <h3 class="mb-4 font-size-3">Thông tin hóa đơn</h3>
-                                                <div class="woocommerce-billing-fields__field-wrapper row">
-                                                    <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field"
-                                                       id="billing_first_name_field" data-priority="10">
-                                                        <label for="billing_first_name" class="form-label">Họ và tên đệm
-                                                            <abbr class="required" title="required">*</abbr></label>
-                                                        {{ form2.first_name(class="input-text form-control", placeholder="", autofocus="autofocus") }}
-                                                    </p>
-                                                    <p class="col-lg-6 mb-4d75 form-row form-row-last validate-required"
-                                                       id="billing_last_name_field" data-priority="20">
-                                                        <label for="billing_last_name" class="form-label">Tên
-                                                            <abbr class="required" title="required">*</abbr></label>
-                                                        {{ form2.last_name(class="input-text form-control", placeholder="") }}
-                                                    </p>
-                                                    <p class="col-12 mb-3 form-row form-row-wide address-field validate-required"
-                                                       id="billing_address_field" data-priority="50">
-                                                        <label for="billing_address" class="form-label">Địa chỉ
-                                                            <abbr class="required" title="required">*</abbr></label>
-                                                        {{ form2.address(class="input-text form-control", placeholder="Số nhà và tên đường") }}
-                                                    </p>
-                                                    <p class="col-12 mb-4d75 form-row form-row-first validate-required validate-phone"
-                                                       id="billing_phone_field" data-priority="100">
-                                                        <label for="billing_phone" class="form-label">Điện thoại <abbr
-                                                                class="required" title="required">*</abbr></label>
-                                                        {{ form2.phone(class="input-text form-control", placeholder="") }}
-                                                    </p>
-                                                    <p class="col-12 mb-4d75 form-row form-row-last validate-required validate-email"
-                                                       id="billing_email_field" data-priority="110">
-                                                        <label for="billing_email" class="form-label">Địa chỉ email
-                                                            <abbr class="required" title="required">*</abbr></label>
-                                                        {{ form2.email(class="input-text form-control", placeholder="") }}
-                                                    </p>
+                                                <div class="woocommerce-billing-fields__field-wrapper row">\
+                                                    {% if current_user.is_authenticated %}
+                                                        <p class="col-12 mb-3 form-row form-row-wide address-field validate-required"
+                                                           id="billing_address_field" data-priority="50">
+                                                            <label for="billing_address" class="form-label">Địa chỉ
+                                                                <abbr class="required" title="required">*</abbr></label>
+                                                            {{ form2.address(class="input-text form-control", placeholder="Số nhà và tên đường") }}
+                                                        </p>
+                                                        <p class="col-12 mb-4d75 form-row form-row-first validate-required validate-phone"
+                                                           id="billing_phone_field" data-priority="100">
+                                                            <label for="billing_phone" class="form-label">Điện thoại <abbr
+                                                                    class="required" title="required">*</abbr></label>
+                                                            {{ form2.phone(class="input-text form-control", placeholder="") }}
+                                                        </p>
+                                                    {% else %}
+                                                        <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field"
+                                                           id="billing_first_name_field" data-priority="10">
+                                                            <label for="billing_first_name" class="form-label">Họ và tên đệm
+                                                                <abbr class="required" title="required">*</abbr></label>
+                                                            {{ form2.first_name(class="input-text form-control", placeholder="", autofocus="autofocus") }}
+                                                        </p>
+                                                        <p class="col-lg-6 mb-4d75 form-row form-row-last validate-required"
+                                                           id="billing_last_name_field" data-priority="20">
+                                                            <label for="billing_last_name" class="form-label">Tên
+                                                                <abbr class="required" title="required">*</abbr></label>
+                                                            {{ form2.last_name(class="input-text form-control", placeholder="") }}
+                                                        </p>
+                                                        <p class="col-12 mb-3 form-row form-row-wide address-field validate-required"
+                                                           id="billing_address_field" data-priority="50">
+                                                            <label for="billing_address" class="form-label">Địa chỉ
+                                                                <abbr class="required" title="required">*</abbr></label>
+                                                            {{ form2.address(class="input-text form-control", placeholder="Số nhà và tên đường") }}
+                                                        </p>
+                                                        <p class="col-12 mb-4d75 form-row form-row-first validate-required validate-phone"
+                                                           id="billing_phone_field" data-priority="100">
+                                                            <label for="billing_phone" class="form-label">Điện thoại <abbr
+                                                                    class="required" title="required">*</abbr></label>
+                                                            {{ form2.phone(class="input-text form-control", placeholder="") }}
+                                                        </p>
+                                                        <p class="col-12 mb-4d75 form-row form-row-last validate-required validate-email"
+                                                           id="billing_email_field" data-priority="110">
+                                                            <label for="billing_email" class="form-label">Địa chỉ email
+                                                                <abbr class="required" title="required">*</abbr></label>
+                                                            {{ form2.email(class="input-text form-control", placeholder="") }}
+                                                        </p>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

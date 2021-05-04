@@ -156,6 +156,15 @@ def checkout():
                                     phone=form2.phone.data,
                                     email=form2.email.data)
 
+            if current_user.is_authenticated and current_user.user_role == UserRole.USER:
+                new_customer = Customer(name=current_user.name,
+                                        address=form2.address.data,
+                                        phone=form2.phone.data,
+                                        email=current_user.email)
+            else:
+                flash('Hãy sử dụng tài khoản khách hàng để thanh toán')
+                return redirect(url_for('store_pages.checkout'))
+
             if utils.add_customer(new_customer):
                 c = Customer.query.filter_by(id=new_customer.id).first()
             else:

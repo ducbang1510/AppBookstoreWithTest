@@ -10,7 +10,7 @@ from . import users_blueprint
 def register():
     # If the User is already logged in, don't allow them to try to register
     if current_user.is_authenticated:
-        flash('Đang đăng nhập với tài khoản {}! Vui lòng đăng xuất để sử dụng tài khoản khác'.format(current_user.username))
+        flash('Đang đăng nhập với tài khoản {}!'.format(current_user.username))
         return redirect(url_for('store_pages.index'))
 
     form = RegisterForm()
@@ -36,7 +36,7 @@ def register():
 def login():
     # If the User is already logged in, don't allow them to try to log in again
     if current_user.is_authenticated:
-        flash('Đang đăng nhập với tài khoản {}! Vui lòng đăng xuất để sử dụng tài khoản khác'.format(current_user.username))
+        flash('Đang đăng nhập với tài khoản {}!'.format(current_user.username))
         return redirect(url_for('store_pages.index'))
 
     form = LoginForm()

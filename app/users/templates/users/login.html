@@ -8,7 +8,7 @@
             <div class="content-wrapper d-flex align-items-center auth auth-bg-1 theme-one">
                 <div class="row w-100">
                     <div class="col-lg-4 mx-auto">
-                        <h2 class="text-center mb-4">Login</h2>
+                        <h2 class="text-center mb-4">Đăng Nhập</h2>
                         <div class="auto-form-wrapper">
                             {% if err_msg %}
                                 <div class="alert alert-danger">
@@ -48,15 +48,15 @@
 
                                         <label class="form-check-label">
                                             {{ form.remember_me(class="form-check-input") }}
-                                            Remember me
+                                            Nhớ mật khẩu
                                         </label>
                                     </div>
-                                    <a href="#" class="text-small forgot-password text-black">Forgot Password</a>
                                 </div>
                                 <div class="text-block text-center my-3">
-                                    <span class="text-small font-weight-semibold">Not a member ?</span>
-                                    <a href="{{ url_for('users.register') }}" class="text-black text-small">Create new
-                                        account</a>
+                                    <span class="text-small font-weight-semibold">Chưa có tài khoản ?</span>
+                                    <a href="{{ url_for('users.register') }}" class="text-black text-small">
+                                        Tạo tài khoản mới
+                                    </a>
                                 </div>
                             </form>
                         </div>
