@@ -60,13 +60,15 @@ def add_customer(customer):
     return True
 
 
-def report_revenue(month, year=None):
+def report_revenue(month, year=None, day=None):
     tong = 0
-    if year:
-        invoices = Invoice.query.filter(extract('month', Invoice.date_of_invoice) == int(month),
+    if day:
+        invoices = Invoice.query.filter(extract('day', Invoice.date_of_invoice) == int(day),
+                                        extract('month', Invoice.date_of_invoice) == int(month),
                                         extract('year', Invoice.date_of_invoice) == int(year)).all()
     else:
-        invoices = Invoice.query.filter(extract('month', Invoice.date_of_invoice) == int(month)).all()
+        invoices = Invoice.query.filter(extract('month', Invoice.date_of_invoice) == int(month),
+                                        extract('year', Invoice.date_of_invoice) == int(year)).all()
 
     for i in invoices:
         tong = tong + i.total

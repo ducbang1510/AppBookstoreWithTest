@@ -6,6 +6,7 @@ import json
 
 
 class StorePagesTest(BaseTestCase):
+    # Test thêm mỗi lần 1 sản phẩm vào giỏ
     def test_add_one_product_to_cart(self):
         data = json.dumps({
             'id': str(1),
@@ -23,6 +24,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['total_amount'] == 115000)
             self.assertTrue(data['total_quantity'] == 1)
 
+    # Test thêm sản phẩm giống nhau vào giỏ
     def test_add_same_products_to_cart(self):
         data = json.dumps({
             'id': str(1),
@@ -43,6 +45,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['total_amount'] == 230000)
             self.assertTrue(data['total_quantity'] == 2)
 
+    # Test thêm những sản phẩm khác nhau
     def test_add_different_products_to_cart(self):
         data1 = json.dumps({
             'id': str(1),
@@ -70,6 +73,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['total_amount'] == 225000)
             self.assertTrue(data['total_quantity'] == 2)
 
+    # Test bớt 1 sản phẩm trong giỏ
     def test_remove_product_from_cart(self):
         data1 = json.dumps({
             'id': str(1),
@@ -92,6 +96,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['message'] == "Cập nhật giỏ hàng thành công")
             self.assertTrue(data['total_quantity'] == 1)
 
+    # Test xóa 1 sản phẩm khỏi giỏ hàng
     def test_delete_item_from_cart(self):
         data1 = json.dumps({
             'id': str(1),
@@ -115,7 +120,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['total_quantity'] == 0)
             self.assertTrue(data['total_amount'] == 0)
 
-    # Test add_or_remove_items_from_cart
+    # Test thêm và xóa số lượng nhiều trong 1 sản phẩm
     def test_add_or_remove_items_from_cart(self):
         data = json.dumps({
             'id': str(1),
@@ -133,7 +138,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(data['total_quantity'] == 3)
             self.assertTrue(data['total_amount'] == 345000)
 
-    # Test index
+    # Test trang chủ
     def test_index_page(self):
         with self.client:
             response = self.client.get('/')
@@ -143,7 +148,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(b'Username' in response.data)
             self.assertTrue(b'Password' in response.data)
 
-    # Test check_out
+    # Test trang thanh toán
     def test_checkout_page(self):
         with self.client:
             response = self.client.get('/checkout')
@@ -155,6 +160,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(b'phone' in response.data)
             self.assertTrue(b'order_comments' in response.data)
 
+    # Test trang thanh toán khi có đăng nhập
     def test_checkout_page_with_login(self):
         create_data()
         with self.client:
@@ -170,7 +176,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(b'phone' in response.data)
             self.assertTrue(b'order_comments' in response.data)
 
-    # Test shop_list
+    # Test trang danh sách sản phẩm với số trang đúng
     def test_shop_list_page_with_valid_page(self):
         create_data()
         with self.client:
@@ -178,6 +184,7 @@ class StorePagesTest(BaseTestCase):
 
         self.assertTrue(response.status_code == 200)
 
+    # Test trang danh sách sản phẩm với số trang sai
     def test_shop_list_page_with_invalid_page(self):
         create_data()
         with self.client:
@@ -185,7 +192,7 @@ class StorePagesTest(BaseTestCase):
 
         self.assertFalse(response.status_code == 200)
 
-    # Test book_detail
+    # Test trang thông tin chi tiết của sách với id sách đúng
     def test_book_detail_page_with_valid_bookID(self):
         create_data()
         with self.client:
@@ -195,6 +202,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(b'add-to-cart' in response.data)
             self.assertTrue(b'quantity' in response.data)
 
+    # Test trang thông tin chi tiết của sách với id sách sai
     def test_book_detail_page_with_invalid_bookID(self):
         create_data()
         with self.client:
@@ -203,7 +211,7 @@ class StorePagesTest(BaseTestCase):
             self.assertTrue(response.status_code == 200)
             self.assertTrue(b'add-to-cart' not in response.data)
 
-    # Test report
+    # Test trang thống kê có login tài khoản admin
     def test_report_page_after_login(self):
         create_data()
         with self.client:
@@ -214,6 +222,7 @@ class StorePagesTest(BaseTestCase):
 
             self.assertTrue(response.status_code == 200)
 
+    # Test trang thống kê khi chưa login
     def test_report_page_not_login(self):
         create_data()
         with self.client:

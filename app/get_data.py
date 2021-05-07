@@ -117,19 +117,28 @@ def check_book_quantity(book_name=None):
 def get_author_id(author_name):
     author = Author.query.filter(Author.name.contains(author_name)).first()
 
-    return author.id
+    if author:
+        return author.id
+    else:
+        return None
 
 
 def get_category_id(category_name):
     category = Category.query.filter(Category.name.contains(category_name)).first()
 
-    return category.id
+    if category:
+        return category.id
+    else:
+        return None
 
 
 def get_book_id(book_name):
     book = Book.query.filter(Book.name.contains(book_name)).first()
 
-    return book.id
+    if book:
+        return book.id
+    else:
+        None
 
 
 def get_row_of_books_db():

@@ -84,7 +84,7 @@ class Customer(db.Model, CRUDMixin):
         self.email = email
 
     def __repr__(self):
-        return f'<User: {self.name}>'
+        return f'<Name: {self.name}>'
 
 
 # Bảng sách

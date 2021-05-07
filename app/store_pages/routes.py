@@ -6,6 +6,7 @@ from app.models import *
 from . import store_pages_blueprint
 from .forms import CustomerForm
 from app.users.forms import LoginForm, RegisterForm
+import calendar
 
 
 @store_pages_blueprint.route('/', methods=['GET', 'POST'])
@@ -331,12 +332,22 @@ class MyView(BaseView):
 @store_pages_blueprint.route('/report', methods=['POST', 'GET'])
 def report():
     data = []
-    reports = get_data.get_data_report()
+    reports = get_data.get_data_report() # Đây là report của inventory
+    label = []
     if current_user.is_authenticated and current_user.user_role == UserRole.ADMIN:
         if request.method == 'POST':
             year = request.form.get("year")
-            for i in range(1, 13):
-                data.append(utils.report_revenue(i, year=year))
+            month = request.form.get("month")
+            if month:
+                p = calendar.monthrange(int(year), int(month))
+                for i in range(1, p[1] + 1):
+                    data.append(utils.report_revenue(month, year=year, day=i))
+                    label.append(i)
+            else:
+                for i in range(1, 13):
+                    data.append(utils.report_revenue(i, year=year))
+                    label.append(i)
+
             m = int(max(data))
             a = list(str(m))
             for i in range(0, len(a)):
@@ -345,9 +356,10 @@ def report():
                 else:
                     a[i] = '0'
             c = int(''.join(a))
-            return MyView().render('admin/thongke.html', data=data, c=c, reports=reports, year=year)
+            return MyView().render('admin/thongke.html', data=data, c=c, reports=reports, label=label,
+                                   month=month, year=year)
 
-        return MyView().render('admin/thongke.html', data=data, c=0, reports=reports)
+        return MyView().render('admin/thongke.html', data=data, c=0, reports=reports, label=label)
     else:
         flash('Hãy đăng nhập với tài khoản quyền admin')
         return redirect('/admin')

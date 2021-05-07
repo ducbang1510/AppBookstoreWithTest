@@ -42,6 +42,14 @@ class ModelTests(BaseTestCase):
         self.assertFalse(isinstance(user.get_id(), int))
         self.assertTrue(user.get_id() == '10')
 
+    # TEST Customer
+    def test_customer(self):
+        c = Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147',
+                            email='hrhsrhrs@gmail.com')
+
+        self.assertTrue(c in db.session)
+        self.assertTrue(c.__repr__() == '<Name: Tran Van A>')
+
     # TEST Book
     def test_add_book(self):
         book = new_book()
@@ -54,21 +62,21 @@ class ModelTests(BaseTestCase):
         self.assertTrue(book.quantity == 40)
 
     # TEST Category
-    def test_new_category(self):
+    def test_category(self):
         category = Category.create(name="Tiểu thuyết")
 
         self.assertTrue(isinstance(category, Category))
         self.assertTrue(category in db.session)
 
     # TEST Author
-    def test_new_author(self):
+    def test_author(self):
         author = Author.create(name="Tiểu thuyết")
 
         self.assertTrue(isinstance(author, Author))
         self.assertTrue(author in db.session)
 
     # TEST Invoice
-    def test_new_invoice(self):
+    def test_invoice(self):
         Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147', email='hrhsrhrs@gmail.com')
         invoice = Invoice(total=154000, customer_id=1)
         db.session.add(invoice)
@@ -76,8 +84,23 @@ class ModelTests(BaseTestCase):
 
         self.assertTrue(invoice in db.session)
 
+    # TEST Detail_Invoice
+    def test_detail_invoice(self):
+        Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147',
+                        email='hrhsrhrs@gmail.com')
+        new_book()
+        invoice = Invoice(total=154000, customer_id=1)
+        db.session.add(invoice)
+        db.session.commit()
+
+        detail_invoice = DetailInvoice(book_id=1, invoice_id=1, quantity=2)
+        db.session.add(detail_invoice)
+        db.session.commit()
+
+        self.assertTrue(detail_invoice in db.session)
+
     # TEST Inventory
-    def test_new_inventory(self):
+    def test_inventory(self):
         ivt = InventoryReport()
         db.session.add(ivt)
         db.session.commit()
@@ -85,9 +108,15 @@ class ModelTests(BaseTestCase):
         self.assertTrue(ivt in db.session)
         self.assertTrue(ivt.report_date == datetime.now().date())
 
-    # TEST Customer
-    def test_new_customer(self):
-        c = Customer.create(name='Tran Van A', address='371 Nguyen Kiem', phone='0457492147', email='hrhsrhrs@gmail.com')
+    # TEST Detail_Inventory
+    def test_detail_inventory(self):
+        new_book()
+        ivt = InventoryReport()
+        db.session.add(ivt)
+        db.session.commit()
 
-        self.assertTrue(c in db.session)
-        self.assertTrue(c.__repr__() == '<Name: Tran Van A>')
+        divt = DetailInventoryReport(report_id=1, book_id=1, quantity=50)
+        db.session.add(divt)
+        db.session.commit()
+
+        self.assertTrue(divt in db.session)
