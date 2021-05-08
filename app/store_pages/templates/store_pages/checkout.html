@@ -102,13 +102,17 @@
                                                            id="billing_phone_field" data-priority="100">
                                                             <label for="billing_phone" class="form-label">Điện thoại <abbr
                                                                     class="required" title="required">*</abbr></label>
-                                                            {{ form2.phone(class="input-text form-control", placeholder="") }}
+{#                                                            {{ form2.phone(class="input-text form-control", placeholder="")}}#}
+                                                            <input id="billing_phone" name="phone"
+                                                                   class="input-text form-control"
+                                                                   placeholder="+84123456789" pattern="(\+84|0)\d{9}"
+                                                                   title="vd: +84123456789 hoặc 0123456789" required>
                                                         </p>
                                                         <p class="col-12 mb-4d75 form-row form-row-last validate-required validate-email"
                                                            id="billing_email_field" data-priority="110">
                                                             <label for="billing_email" class="form-label">Địa chỉ email
                                                                 <abbr class="required" title="required">*</abbr></label>
-                                                            {{ form2.email(class="input-text form-control", placeholder="") }}
+                                                            {{ form2.email(class="input-text form-control", placeholder="abc@gmail.com") }}
                                                         </p>
                                                     {% endif %}
                                                 </div>
@@ -206,7 +210,6 @@
                                         </div>
                                         <div class="form-row place-order">
                                             <input type="submit"
-{#                                                   onclick="pay()"#}
                                                    value="Đặt hàng"
                                                    class="button alt btn btn-dark btn-block rounded-0 py-4" />
                                             <input type="hidden" id="_wpnonce" name="_wpnonce" value="926470d564"><input

@@ -1,6 +1,11 @@
 {% extends 'admin/master.html' %}
 
 {% block head %}
+    <script>
+        function delete_flash(flash) {
+            $(flash).parent().remove()
+        }
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -8,6 +13,14 @@
     {% if msg %}
         <div class="alert alert-warning">
             <h4>{{ msg }}</h4>
+        </div>
+    {% endif %}
+    {% if get_flashed_messages() %}
+        <div class="alert alert-info alert-dismissible">
+        <button type="button" class="close" aria-label="Close" onclick="delete_flash(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+            {{ get_flashed_messages()[0] }}
         </div>
     {% endif %}
 

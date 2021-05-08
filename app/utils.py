@@ -76,8 +76,8 @@ def report_revenue(month, year=None, day=None):
     return tong
 
 
-def create_book_with_quantity(name=None, content=None, description=None, image=None, price=None,
-                              quantity=None, author=None, category=None):
+def create_book_with_quantity(name, content, description, image, price,
+                              quantity, author, category):
     book = Book(name=name, content=content, description=description, image=image,
                 price=price, quantity=quantity)
 
@@ -91,9 +91,11 @@ def create_book_with_quantity(name=None, content=None, description=None, image=N
         book_id = get_data.get_book_id(book_name=name)
         book_cate = BookCate(book_id=book_id, category_id=category_id)
         book_author = BookAuthor(book_id=book_id, author_id=author_id)
+        book_image = Bookimage(image=image, book_id=book_id)
 
         db.session.add(book_cate)
         db.session.add(book_author)
+        db.session.add(book_image)
 
         db.session.commit()
         return True

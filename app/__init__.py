@@ -16,6 +16,7 @@ def create_app(config):
     app.config.from_pyfile(config)
     initialize_extensions(app)
     register_blueprints(app)
+    app.config['ROOT_PROJECT_PATH'] = app.root_path
     return app
 
 

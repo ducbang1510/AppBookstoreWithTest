@@ -6,7 +6,7 @@ from app.models import *
 from . import store_pages_blueprint
 from .forms import CustomerForm
 from app.users.forms import LoginForm, RegisterForm
-import calendar
+import calendar, os
 
 
 @store_pages_blueprint.route('/', methods=['GET', 'POST'])
@@ -332,7 +332,7 @@ class MyView(BaseView):
 @store_pages_blueprint.route('/report', methods=['POST', 'GET'])
 def report():
     data = []
-    reports = get_data.get_data_report() # Đây là report của inventory
+    reports = get_data.get_data_report()  # Đây là report của inventory
     label = []
     if current_user.is_authenticated and current_user.user_role == UserRole.ADMIN:
         if request.method == 'POST':
@@ -365,14 +365,6 @@ def report():
         return redirect('/admin')
 
 
-# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-#
-#
-# def allowed_file(filename):
-#     return '.' in filename and \
-#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 # Nhập sách
 @store_pages_blueprint.route('/admin/tempbookview', methods=['GET', 'POST'])
 def create_book():
@@ -385,36 +377,27 @@ def create_book():
         quantity = request.form.get('quantity')
         category = request.form.get('category')
         author = request.form.get('author')
-        image = request.form.get('image')
 
-        print(author)
-        print(category)
+        image = request.files['image']
+        image_path = 'assets/img/book_img/%s' % image.filename
+        image.save(os.path.join(create_app('app.cfg').config['ROOT_PROJECT_PATH'], 'static/', image_path))
 
-        # upload_and_save_picture_not_finish
-        # file_path = os.getcwd() + r'\app\static\assets\img\book_img'
-        # image = request.files['image']
-        #
-        # if image and allowed_file(image.filename):
-        #     file_name = secure_filename(image.filename)
-        #     image.save(os.path.join(file_path), file_name)
+        image_path2 = 'assets/img/300x452/%s' % image.filename
+        image.save(os.path.join(create_app('app.cfg').config['ROOT_PROJECT_PATH'], 'static/', image_path2))
 
     # Kiểm tra điều kiện
     kq_check_exitst = get_data.check_book_is_exists(name)
     kq_check_quantity = get_data.check_book_quantity(name)
-    kq_create = None
-    kq_update = None
-    kq = None
 
     if not kq_check_exitst:
-        kq_create = utils.create_book_with_quantity(name, content, description, image, price,
-                                                       quantity, author, category)
+        utils.create_book_with_quantity(name=name, content=content, description=description,
+                                        image=image_path, price=price,
+                                        quantity=quantity, author=author, category=category)
+        flash('Tạo sách mới thành công')
     elif kq_check_quantity:
-        kq_update = utils.update_book_with_quantity(name, quantity)
+        utils.update_book_with_quantity(name, quantity)
+        flash('Nhập thêm sách thành công')
     else:
-        kq = False
-
-    print(kq_create)
-    print(kq_update)
-    print(kq)
+        flash('Nhập sách không thành công')
 
     return redirect('/admin/tempbookview')
