@@ -78,36 +78,38 @@ def report_revenue(month, year=None, day=None):
 
 def create_book_with_quantity(name, content, description, image, price,
                               quantity, author, category):
-    book = Book(name=name, content=content, description=description, image=image,
-                price=price, quantity=quantity)
+    if quantity >= 50:
+        book = Book(name=name, content=content, description=description, image=image,
+                    price=price, quantity=quantity)
 
-    category_id = get_data.get_category_id(category_name=category)
-    author_id = get_data.get_author_id(author_name=author)
+        category_id = get_data.get_category_id(category_name=category)
+        author_id = get_data.get_author_id(author_name=author)
 
-    try:
-        db.session.add(book)
-        db.session.commit()
+        try:
+            db.session.add(book)
+            db.session.commit()
 
-        book_id = get_data.get_book_id(book_name=name)
-        book_cate = BookCate(book_id=book_id, category_id=category_id)
-        book_author = BookAuthor(book_id=book_id, author_id=author_id)
-        book_image = Bookimage(image=image, book_id=book_id)
+            book_id = get_data.get_book_id(book_name=name)
+            book_cate = BookCate(book_id=book_id, category_id=category_id)
+            book_author = BookAuthor(book_id=book_id, author_id=author_id)
+            book_image = Bookimage(image=image, book_id=book_id)
 
-        db.session.add(book_cate)
-        db.session.add(book_author)
-        db.session.add(book_image)
+            db.session.add(book_cate)
+            db.session.add(book_author)
+            db.session.add(book_image)
 
-        db.session.commit()
-        return True
+            db.session.commit()
+            return True
 
-    except Exception as ex:
-        print(ex)
-        return False
+        except Exception as ex:
+            print(ex)
+            return False
+    return False
 
 
 def update_book_with_quantity(book_name, quantity):
     b = Book.query.filter(Book.name.contains(book_name)).first()
-    if b.quantity <= 300:
+    if b.quantity <= 300 and quantity >= 50:
         b.quantity += int(quantity)
     else:
         pass

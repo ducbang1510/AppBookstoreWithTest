@@ -74,6 +74,18 @@ class UtilsTest(BaseTestCase):
 
         self.assertTrue(row_after > row_before)
 
+    def test_create_book_with_quantity_lower_than_50(self):
+        create_data()
+        row_before = get_data.get_row_of_books_db()
+
+        utils.create_book_with_quantity(name='Naruto Tập 1', content='nội dung', description='mô tả', image=''
+                                        , price=50000, quantity=49, author='Masashi Kishimoto',
+                                        category='Manga - Comic')
+
+        row_after = get_data.get_row_of_books_db()
+
+        self.assertFalse(row_after > row_before)
+
     # Test update_book_with_quantity
     def test_update_book_with_valid_quantity(self):
         create_data()
@@ -89,3 +101,10 @@ class UtilsTest(BaseTestCase):
         book = get_data.get_book_by_id(2)
         self.assertTrue(book.quantity == 310)
         self.assertFalse(book.quantity == 360)
+
+    def test_update_book_with_quantity_lower_than_50(self):
+        create_data()
+        utils.update_book_with_quantity(book_name='Naruto Tập 43', quantity=40)
+
+        book = get_data.get_book_by_id(1)
+        self.assertFalse(book.quantity == 90)

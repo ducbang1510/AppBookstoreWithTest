@@ -391,15 +391,18 @@ def create_book():
     kq_check_exitst = get_data.check_book_is_exists(name)
     kq_check_quantity = get_data.check_book_quantity(name)
 
-    if not kq_check_exitst:
-        utils.create_book_with_quantity(name=name, content=content, description=description,
-                                        image=image_path, price=price,
-                                        quantity=quantity, author=author, category=category)
-        flash('Tạo sách mới thành công')
-    elif kq_check_quantity:
-        utils.update_book_with_quantity(name, quantity)
-        flash('Nhập thêm sách thành công')
+    if quantity >= 50:
+        if not kq_check_exitst:
+            utils.create_book_with_quantity(name=name, content=content, description=description,
+                                            image=image_path, price=price,
+                                            quantity=quantity, author=author, category=category)
+            flash('Tạo sách mới thành công')
+        elif kq_check_quantity:
+            utils.update_book_with_quantity(name, quantity)
+            flash('Nhập thêm sách thành công')
+        else:
+            flash('Nhập sách không thành công')
     else:
-        flash('Nhập sách không thành công')
+        flash('Số lượng sách nhập thêm hoặc tạo mới phải tối thiểu 50')
 
     return redirect('/admin/tempbookview')
