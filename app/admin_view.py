@@ -32,6 +32,14 @@ class BookModelView(AuthenticatedView):
     form_columns = ('name', 'content', 'description', 'image', 'price', 'quantity', 'categories', 'authors',)
 
 
+class InventoryReportView(AuthenticatedView):
+    column_display_pk = True
+    can_create = True
+    can_export = True
+    can_delete = True
+    form_columns = ('report_date',)
+
+
 class ContactView(BaseView):
     @expose('/')
     def index(self):
@@ -70,7 +78,7 @@ admin.add_view(TempBookView(name='Nhập Sách'))
 
 admin.add_view(MyModelView(Invoice, db.session, name='Hóa đơn'))
 admin.add_view(MyModelView(DetailInvoice, db.session, name='Chi tiết hóa đơn'))
-admin.add_view(MyModelView(InventoryReport, db.session, name='Báo cáo tồn'))
+admin.add_view(InventoryReportView(InventoryReport, db.session, name='Báo cáo tồn'))
 admin.add_view(MyModelView(DetailInventoryReport, db.session, name='Chi tiết báo cáo tồn'))
 
 admin.add_link(MenuLink(name='Thống kê', url='/report'))

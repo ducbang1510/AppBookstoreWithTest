@@ -40,7 +40,7 @@
                         <input type="radio" name="options" id="r-month" value="month"> Tháng
                     </div>
                     <div class="form-group form-inline">
-                        <input class="form-control" type="text" name="year" id="year" placeholder="Nhập năm"/>
+                        <input class="form-control" type="text" name="year" id="year" placeholder="Nhập năm" required/>
                         <input class="form-control" type="text" name="month" id="month" placeholder="Nhập tháng" style="display: none"/>
                         <button type="submit" class="btn btn-default">Submit</button>
                     </div>
@@ -180,7 +180,7 @@
                                 display: true,
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Tháng',
+                                    labelString: '{{ lx }}',
                                     fontSize: 12,
                                     lineHeight: 2
                                 },

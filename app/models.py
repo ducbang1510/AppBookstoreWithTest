@@ -236,5 +236,9 @@ class DetailInventoryReport(db.Model):
     report_id = Column(Integer, ForeignKey('inventory_report.id'), primary_key=True)
     book_id = Column(Integer, ForeignKey('book.id'), primary_key=True)
     quantity = Column(Integer, default=0)
+
     books = relationship('Book', backref=backref('detail_inventory_report', lazy=True))
     inventory_reports = relationship('InventoryReport', backref=backref('detail_inventory_report', lazy=True))
+
+    def __str__(self):
+        return "%s: %s" % (str(self.inventory_reports), str(self.books))

@@ -336,16 +336,19 @@ def report():
     data = []
     reports = get_data.get_data_report()  # Đây là report của inventory
     label = []
+    lx = 'Ngày'
     if current_user.is_authenticated and current_user.user_role == UserRole.ADMIN:
         if request.method == 'POST':
             year = request.form.get("year")
             month = request.form.get("month")
             if month:
+                lx = 'Ngày'
                 p = calendar.monthrange(int(year), int(month))
                 for i in range(1, p[1] + 1):
                     data.append(utils.report_revenue(month, year=year, day=i))
                     label.append(i)
             else:
+                lx = 'Tháng'
                 for i in range(1, 13):
                     data.append(utils.report_revenue(i, year=year))
                     label.append(i)
@@ -359,9 +362,9 @@ def report():
                     a[i] = '0'
             c = int(''.join(a))
             return MyView().render('admin/thongke.html', data=data, c=c, reports=reports, label=label,
-                                   month=month, year=year)
+                                   month=month, year=year, lx=lx)
 
-        return MyView().render('admin/thongke.html', data=data, c=0, reports=reports, label=label)
+        return MyView().render('admin/thongke.html', data=data, c=0, reports=reports, label=label, lx=lx)
     else:
         flash('Hãy đăng nhập với tài khoản quyền admin')
         return redirect('/admin')

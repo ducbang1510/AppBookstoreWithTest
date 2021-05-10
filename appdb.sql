@@ -331,7 +331,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `username_2` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -340,7 +340,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Duc Bang','abc@gmail.com','admin123','$2b$15$lms2Ym.cESGtAv8h3cu.vOzLvJfT0LSX/J8wZKCyPyQ3YFuX1idBG',1,'2021-04-10','ADMIN'),(2,'Van Trung','trung123@gmail.com','trung123','$2b$15$Vntfv7CjBCt8kGptf8Btvu5yQUkSkXThaXnnp/bxNhRskTLxRqRJ.',1,'2021-04-10','USER'),(3,'Anh Khoa','Khoa123@gmail.com','khoa123','$2b$15$4WEA89IQw7BltfyXU4V7mOor3sHajNP7lhKt/C8p6N8S6oVylKrey',1,'2021-04-10','USER'),(6,'Tran Trong Tin','Tin123@gmail.com','tin123','$2b$15$BzR6JXh0AabKD0bbU4i/keznWWydUj2RsPyW240DkTcnMIMnfDxsm',1,'2021-05-02','USER'),(7,'Tran Van B','gssigsi@gmail.com','adbc123','$2b$15$V/NlqQd4OnM.Lif.C54NtuFwK.Kfa1rRM0soZUQX1OhDZCBt6sHcu',1,'2021-05-02','USER');
+INSERT INTO `users` VALUES (1,'Duc Bang','abc@gmail.com','admin123','$2b$15$lms2Ym.cESGtAv8h3cu.vOzLvJfT0LSX/J8wZKCyPyQ3YFuX1idBG',1,'2021-04-10','ADMIN'),(2,'Van Trung','trung123@gmail.com','trung123','$2b$15$Vntfv7CjBCt8kGptf8Btvu5yQUkSkXThaXnnp/bxNhRskTLxRqRJ.',1,'2021-04-10','USER'),(3,'Anh Khoa','Khoa123@gmail.com','khoa123','$2b$15$4WEA89IQw7BltfyXU4V7mOor3sHajNP7lhKt/C8p6N8S6oVylKrey',1,'2021-04-10','USER'),(6,'Tran Trong Tin','Tin123@gmail.com','tin123','$2b$15$BzR6JXh0AabKD0bbU4i/keznWWydUj2RsPyW240DkTcnMIMnfDxsm',1,'2021-05-02','USER'),(7,'Tran Van B','gssigsi@gmail.com','adbc123','$2b$15$V/NlqQd4OnM.Lif.C54NtuFwK.Kfa1rRM0soZUQX1OhDZCBt6sHcu',1,'2021-05-02','USER'),(12,'Tran Van A','ban@gmail.com','user123','$2b$15$NoIXaHv8W0ReZmFYolzX0.ciSquepc64QS0Sj82SniAd/4VOkoXX2',1,'2021-05-10','USER');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -353,4 +353,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-08 19:04:30
+-- Dump completed on 2021-05-10 21:52:23
