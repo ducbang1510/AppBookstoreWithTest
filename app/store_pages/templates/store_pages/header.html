@@ -261,7 +261,6 @@
                             <input class="form-control bg-white-100 min-width-380 py-2d75 height-4 border-white-100"
                                    name="kw" , id="kw"
                                    type="search" placeholder="Tìm kiếm bằng từ khóa ..." aria-label="Search"
-                                   oninvalid="this.setCustomValidity('Vui lòng điền vào ô để tìm kiếm')"
                                    required>
                         </div>
                         <button class="btn btn-outline-success my-2 my-sm-0 sr-only" type="submit">Search</button>
@@ -579,7 +578,7 @@
                                         class="flaticon-resume mr-3 font-size-5"></i>Tạo tài khoản</h2>
                             </header>
                             <!-- End Title -->
-                            <form method="post" action="{{ url_for('users.register') }}" onsubmit="return validate()"
+                            <form id="register" method="post" action="{{ url_for('users.register') }}" onsubmit="return validate()"
                                   enctype="multipart/form-data">
                                 {{ form1.hidden_tag() }}
                                 {{ form1.csrf_token }}
@@ -589,7 +588,9 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="nameLabel1" class="form-label" for="name_dk">Họ và tên
                                                 *</label>
-                                            {{ form1.name_dk(class="form-control rounded-0 height-4 px-4", placeholder="Name") }}
+                                            {{ form1.name_dk(class="form-control rounded-0 height-4 px-4", placeholder="Trần Văn A", onfocusout="checkName()", onchange='checkName()') }}
+                                            <span id="message-name" class="text-danger">
+                                            </span>
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -599,7 +600,9 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="emailLabel1" class="form-label" for="email_dk">Email
                                                 *</label>
-                                            {{ form1.email_dk(class="form-control rounded-0 height-4 px-4", placeholder="creativelayers088@gmail.com") }}
+                                            {{ form1.email_dk(class="form-control rounded-0 height-4 px-4", placeholder="creativelayers088@gmail.com", onfocusout="checkEmail()", onchange='checkEmail()') }}
+                                            <span id="message-mail" class="text-danger">
+                                            </span>
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -609,7 +612,9 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="usernameLabel1" class="form-label" for="username_dk">Username
                                                 *</label>
-                                            {{ form1.username_dk(class="form-control rounded-0 height-4 px-4", placeholder="Username") }}
+                                            {{ form1.username_dk(class="form-control rounded-0 height-4 px-4", placeholder="User123", onfocusout="checkUsername()", onchange='checkUsername()') }}
+                                            <span id="message-username" class="text-danger">
+                                            </span>
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -619,7 +624,9 @@
                                         <div class="js-form-message js-focus-state">
                                             <label id="passwordLabel1" class="form-label" for="password_dk">Mật khẩu
                                                 *</label>
-                                            {{ form1.password_dk(class="form-control rounded-0 height-4 px-4", placeholder="Password") }}
+                                            {{ form1.password_dk(class="form-control rounded-0 height-4 px-4", placeholder="Abc123!@#", onfocusout="checkPasword()", onchange='checkPassword()') }}
+                                            <span id="message-password" class="text-danger">
+                                            </span>
                                         </div>
                                     </div>
                                     <!-- End Form Group -->
@@ -635,7 +642,8 @@
                                     <!-- End Input -->
 
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-block py-3 rounded-0 btn-dark">
+                                        <button type="button" class="btn btn-block py-3 rounded-0 btn-dark" id="bt-register"
+                                        onclick="submitFormRegister()">
                                             Tạo tài khoản
                                         </button>
                                     </div>
@@ -862,10 +870,9 @@
                         <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                             <h2 class="font-size-3 mb-3">TRỢ GIÚP VÀ CÀI ĐẶT </h2>
                             <ul class="list-group list-group-flush list-group-borderless">
-                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Trợ
-                                    giúp</a>
-                                </li>
                                 {% if current_user.is_authenticated %}
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Tài khoản: {{ current_user.username }}</a>
+                                    </li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ url_for('users.logout') }}" class="h-primary">Đăng
                                     xuất</a>
                                     </li>
@@ -874,6 +881,9 @@
                                     nhập</a>
                                     </li>
                                 {% endif %}
+                                <li class="list-group-item px-0 py-2 border-0"><a href="#" class="h-primary">Trợ
+                                    giúp</a>
+                                </li>
                             </ul>
                         </div>
 

@@ -11,6 +11,14 @@
 
 {% block body %}
     <body class="left-sidebar">
+    {% if get_flashed_messages() %}
+        <div class="alert alert-info alert-dismissible">
+        <button type="button" class="close" aria-label="Close" onclick="delete_flash(this)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+            {{ get_flashed_messages()[0] }}
+        </div>
+    {% endif %}
     {% block header %}
         {% include 'store_pages/header.html' %}
     {% endblock %}
@@ -884,9 +892,9 @@
                                         </a>
                                     </li>
                                 {% else %}
-                                    <li class="flex-shrink-0 flex-md-shrink-1 page-item">
-                                        <a class="page-link" href="#">Previous</a>
-                                    </li>
+{#                                    <li class="flex-shrink-0 flex-md-shrink-1 page-item">#}
+{#                                        <a class="page-link" href="#">Previous</a>#}
+{#                                    </li>#}
                                 {% endif %}
                             {% endif %}
 
@@ -917,9 +925,9 @@
                                         </a>
                                     </li>
                                 {% else %}
-                                    <li class="flex-shrink-0 flex-md-shrink-1 page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
+{#                                    <li class="flex-shrink-0 flex-md-shrink-1 page-item">#}
+{#                                        <a class="page-link" href="#">Next</a>#}
+{#                                    </li>#}
                                 {% endif %}
                             {% endif %}
                         </ul>

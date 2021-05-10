@@ -12,12 +12,12 @@
                                     <h4>{{ err_msg }}</h4>
                                 </div>
                             {% endif %}
-                            <form method="post" action="" enctype="multipart/form-data">
+                            <form id="register" method="post" action="{{ url_for('users.register') }}" enctype="multipart/form-data">
                                 {{ form.hidden_tag() }}
                                 {{ form.csrf_token }}
                                 <div class="form-group">
                                     <div class="input-group">
-                                        {{ form.name_dk(class="form-control", placeholder="Name") }}
+                                        {{ form.name_dk(class="form-control", placeholder="Trần Văn A", onfocusout="checkName()", onchange='checkName()') }}
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -26,8 +26,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <span id="message-name" class="text-danger">
+                                    </span>
+                                </div>
+                                <div class="form-group">
                                     <div class="input-group">
-                                        {{ form.email_dk(class="form-control", placeholder="Email") }}
+                                        {{ form.email_dk(class="form-control", placeholder="creativelayers088@gmail.com", onfocusout="checkEmail()", onchange='checkEmail()') }}
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -36,8 +40,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <span id="message-mail" class="text-danger">
+                                    </span>
+                                </div>
+                                <div class="form-group">
                                     <div class="input-group">
-                                        {{ form.username_dk(class="form-control", placeholder="Username") }}
+                                        {{ form.username_dk(class="form-control", placeholder="User123", onfocusout="checkUsername()", onchange='checkUsername()') }}
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
@@ -46,14 +54,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <span id="message-username" class="text-danger">
+                                    </span>
+                                </div>
+                                <div class="form-group">
                                     <div class="input-group">
-                                        {{ form.password_dk(class="form-control", placeholder="Password") }}
+                                        {{ form.password_dk(class="form-control", placeholder="Abc123!@#", onfocusout="checkPasword()", onchange='checkPassword()') }}
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="mdi mdi-check-circle-outline"></i>
                                             </span>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <span id="message-password" class="text-danger">
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <div class="input-group">
@@ -73,7 +89,11 @@
                                     </p>
                                 </div>
                                 <div class="form-group">
-                                    {{ form.submit(class="btn btn-primary submit-btn btn-block") }}
+{#                                    {{ form.submit(class="btn btn-primary submit-btn btn-block") }}#}
+                                    <button type="button" class="btn btn-primary submit-btn btn-block" id="bt-register"
+                                            onclick="submitFormRegister()">
+                                        Tạo tài khoản
+                                    </button>
                                 </div>
                                 <div class="text-block text-center my-3">
                                     <span class="text-small font-weight-semibold">Đã có tài khoản ?</span>

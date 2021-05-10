@@ -105,8 +105,10 @@ def shop_filter():
     if len(books) == 0:
         if kw:
             flash('Không có kết quả nào về {}'.format(kw))
+            return redirect(url_for('store_pages.shop_filter'))
         else:
             flash('Không có kết quả nào')
+            return redirect(url_for('store_pages.shop_filter'))
 
     quan, price = utils.cart_stats(session.get('cart'))
     cart_info = {
@@ -365,7 +367,7 @@ def report():
         return redirect('/admin')
 
 
-# Nhập sách
+# Nhập thêm sách và tạo sách mới
 @store_pages_blueprint.route('/admin/tempbookview', methods=['GET', 'POST'])
 def create_book():
     # lấy dữ liệu từ form
