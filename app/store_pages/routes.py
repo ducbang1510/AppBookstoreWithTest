@@ -333,8 +333,8 @@ class MyView(BaseView):
 
 @store_pages_blueprint.route('/report', methods=['POST', 'GET'])
 def report():
-    data = []
     reports = get_data.get_data_report()  # Đây là report của inventory
+    data = []
     label = []
     lx = 'Ngày'
     if current_user.is_authenticated and current_user.user_role == UserRole.ADMIN:
